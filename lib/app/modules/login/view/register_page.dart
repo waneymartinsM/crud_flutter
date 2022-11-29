@@ -31,7 +31,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordController = TextEditingController();
   final telController = TextEditingController();
   File? file;
-
   String genreValue = "";
   String maritalStsValue = "";
   bool loading = false;
@@ -47,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
         Modular.to.pop();
       });
     } on PlatformException catch (e) {
-      if(kDebugMode) {
+      if (kDebugMode) {
         print(e);
       }
       Modular.to.pop();
@@ -61,29 +60,28 @@ class _RegisterPageState extends State<RegisterPage> {
     return File(croppedImage!.path);
   }
 
-  void selectPhotoOptions(){
+  void selectPhotoOptions() {
     showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(25),
-          ),
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25),
         ),
-        builder: (_) => DraggableScrollableSheet(
+      ),
+      builder: (_) => DraggableScrollableSheet(
           initialChildSize: 0.28,
-            minChildSize: 0.28,
-            maxChildSize: 0.4,
-            expand: false,
-            builder: (_, scrollController){
+          minChildSize: 0.28,
+          maxChildSize: 0.4,
+          expand: false,
+          builder: (_, scrollController) {
             return SingleChildScrollView(
               controller: scrollController,
               child: SelectPhotoOptions(
                 onTap: pickImage,
               ),
             );
-            }
-        ),
+          }),
     );
   }
 
@@ -355,9 +353,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         const Text(
                           "Sexo",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: purple),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: purple,
+                          ),
                         ),
                         ListTile(
                           title: const Text(

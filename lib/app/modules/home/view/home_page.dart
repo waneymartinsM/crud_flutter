@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/modules/home/repository/home_repository.dart';
@@ -5,11 +7,15 @@ import 'package:crud_flutter/app/modules/home/store/home_store.dart';
 import 'package:crud_flutter/app/widgets/alert.dart';
 import 'package:crud_flutter/app/widgets/input_customized.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
+import 'package:crud_flutter/app/widgets/select_photo_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   String genreValue = "";
   String maritalStsValue = "";
   bool loading = false;
+  File? file;
 
   void onInit() async {
     await controller.recoverUserData();
@@ -46,6 +53,55 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     onInit();
     super.initState();
+  }
+
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      File? img = File(image!.path);
+      img = await cropImage(imageFile: img);
+      setState(() {
+        file = img;
+        Modular.to.pop();
+      });
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      Modular.to.pop();
+    }
+  }
+
+  Future<File?> cropImage({required File imageFile}) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(
+      sourcePath: imageFile.path,
+    );
+    return File(croppedImage!.path);
+  }
+
+  void selectPhotoOptions() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25),
+        ),
+      ),
+      builder: (_) => DraggableScrollableSheet(
+          initialChildSize: 0.28,
+          minChildSize: 0.28,
+          maxChildSize: 0.4,
+          expand: false,
+          builder: (_, scrollController) {
+            return SingleChildScrollView(
+              controller: scrollController,
+              child: SelectPhotoOptions(
+                onTap: pickImage,
+              ),
+            );
+          }),
+    );
   }
 
   @override
@@ -123,69 +179,6 @@ class _HomePageState extends State<HomePage> {
                             const SizedBox(
                               height: 10.0,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                ///PEGA A IMAGEM DA CAMERA OU GALERIA
-                              },
-                              child: Stack(
-                                children: [
-                                  SizedBox(
-                                    height: 300,
-                                    width: double.maxFinite,
-                                    child: Card(
-                                      elevation: 8.0,
-                                      color: Colors.white.withOpacity(0.2),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                      ),
-                                      // child: ClipRRect(
-                                      //   borderRadius:
-                                      //       BorderRadius.circular(18.0),
-                                      //   child: controller.file == null
-                                      //       ? CachedNetworkImage(
-                                      //           filterQuality:
-                                      //               FilterQuality.high,
-                                      //           color: controller.readOnly
-                                      //               ? null
-                                      //               : Colors.black
-                                      //                   .withOpacity(0.5),
-                                      //           colorBlendMode:
-                                      //               BlendMode.colorBurn,
-                                      //           imageUrl: controller.userModel
-                                      //                   .userImage.isEmpty
-                                      //               ? "https://nitreo.com/img/igDefaultProfilePic.png"
-                                      //               : controller
-                                      //                   .userModel.userImage,
-                                      //           fit: BoxFit.cover,
-                                      //           errorWidget:
-                                      //               (context, url, error) =>
-                                      //                   const Icon(Icons.error),
-                                      //         )
-                                      //       : Image.file(
-                                      //           controller.file!,
-                                      //           filterQuality:
-                                      //               FilterQuality.high,
-                                      //           fit: BoxFit.cover,
-                                      //         ),
-                                      // ),
-                                    ),
-                                  ),
-                                 // if (controller.readOnly == false)
-                                 //    Positioned(
-                                 //      right: 0,
-                                 //      left: 0,
-                                 //      top: 0,
-                                 //      bottom: 0,
-                                 //      child: Icon(
-                                 //        Icons.edit,
-                                 //        color: Colors.white.withOpacity(0.6),
-                                 //        size: 45,
-                                 //      ),
-                                 //    ),
-                                ],
-                              ),
-                            ),
                             Center(
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(150),
@@ -197,6 +190,33 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 15),
+                            controller.readOnly
+                                ? const Text(
+                                    "Foto do usuário",
+                                    style: TextStyle(
+                                      color: purple,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text(
+                                          "Alterar foto de perfil",
+                                          style: TextStyle(
+                                            color: purple,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      selectPhotoOptions();
+                                    },
+                                  ),
                             const SizedBox(height: 15),
                             InputCustomized(
                               icon: Icons.person,
@@ -242,109 +262,114 @@ class _HomePageState extends State<HomePage> {
                             ),
                             const SizedBox(height: 10),
                             controller.readOnly == false
-                             ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: 30,
-                                ),
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    minimumSize: MaterialStateProperty.all(
-                                      const Size(double.maxFinite, 45),
+                                ? Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                      horizontal: 30,
                                     ),
-                                    backgroundColor: MaterialStateProperty.all(
-                                      lightPurple,
-                                    ),
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
+                                    child: TextButton(
+                                      style: ButtonStyle(
+                                        minimumSize: MaterialStateProperty.all(
+                                          const Size(double.maxFinite, 45),
+                                        ),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                          lightPurple,
+                                        ),
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        final user = UserModel(
+                                          name: nameController.text,
+                                          email: emailController.text,
+                                          cpf: cpfController.text,
+                                          phone: telController.text,
+                                          password: passwordController.text,
+                                          maritalStatus: maritalStsValue,
+                                          genre: genreValue,
+                                        );
+                                        List result = controller
+                                            .validateUpdatedFields(user);
+
+                                        if (result.first == true) {
+                                          setState(
+                                            () => loading = true,
+                                          );
+                                          bool result = await _repository
+                                              .updateUserData(user);
+                                          if (result) {
+                                            setState(
+                                              () => loading = false,
+                                            );
+                                          } else {
+                                            alertDialog(
+                                              context,
+                                              AlertType.error,
+                                              'Erro',
+                                              'Ocorreu um erro ao atualizar perfil!',
+                                            );
+                                          }
+                                        } else {
+                                          alertDialog(
+                                            context,
+                                            AlertType.error,
+                                            'Erro',
+                                            result[2],
+                                          );
+                                        }
+                                      },
+                                      child: const Text(
+                                        "Salvar alterações",
+                                        style: TextStyle(
+                                          color: purple,
+                                          fontSize: 18,
+                                        ),
                                       ),
                                     ),
+                                  )
+                                : Column(
+                                    children: [
+                                      InputCustomized(
+                                        icon: Icons.credit_card_rounded,
+                                        readOnly: controller.readOnly,
+                                        hintText: controller.userModel.cpf,
+                                        hintStyle: const TextStyle(
+                                          color: darkPurple,
+                                        ),
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      InputCustomized(
+                                        icon: Icons.person_outline_outlined,
+                                        readOnly: controller.readOnly,
+                                        hintText: controller.userModel.genre,
+                                        hintStyle: const TextStyle(
+                                          color: darkPurple,
+                                        ),
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      InputCustomized(
+                                        icon: Icons.people,
+                                        readOnly: controller.readOnly,
+                                        hintText:
+                                            controller.userModel.maritalStatus,
+                                        hintStyle: const TextStyle(
+                                          color: darkPurple,
+                                        ),
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                      ),
+                                    ],
                                   ),
-                                  onPressed: () async {
-                                    final user = UserModel(
-                                      name: nameController.text,
-                                      email: emailController.text,
-                                      cpf: cpfController.text,
-                                      phone: telController.text,
-                                      password: passwordController.text,
-                                      maritalStatus: maritalStsValue,
-                                      genre: genreValue,
-                                    );
-                                    List result =
-                                        controller.validateUpdatedFields(user);
 
-                                    if (result.first == true) {
-                                      setState(
-                                        () => loading = true,
-                                      );
-                                      bool result = await _repository
-                                          .updateUserData(user);
-                                      if (result) {
-                                        setState(
-                                          () => loading = false,
-                                        );
-                                      } else {
-                                        alertDialog(
-                                          context,
-                                          AlertType.error,
-                                          'Erro',
-                                          'Ocorreu um erro ao atualizar perfil!',
-                                        );
-                                      }
-                                    } else {
-                                      alertDialog(
-                                        context,
-                                        AlertType.error,
-                                        'Erro',
-                                        result[2],
-                                      );
-                                    }
-                                  },
-                                  child: const Text(
-                                    "Salvar alterações",
-                                    style: TextStyle(
-                                      color: purple,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                              )
-                             : Column(
-                                children: [
-                                  InputCustomized(
-                                    icon: Icons.credit_card_rounded,
-                                    readOnly: controller.readOnly,
-                                    hintText: controller.userModel.cpf,
-                                    hintStyle: const TextStyle(
-                                      color: darkPurple,
-                                    ),
-                                    keyboardType: TextInputType.emailAddress,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  InputCustomized(
-                                    icon: Icons.person_outline_outlined,
-                                    readOnly: controller.readOnly,
-                                    hintText: controller.userModel.genre,
-                                    hintStyle: const TextStyle(
-                                      color: darkPurple,
-                                    ),
-                                    keyboardType: TextInputType.emailAddress,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  InputCustomized(
-                                    icon: Icons.people,
-                                    readOnly: controller.readOnly,
-                                    hintText: controller.userModel.maritalStatus,
-                                    hintStyle: const TextStyle(
-                                      color: darkPurple,
-                                    ),
-                                    keyboardType: TextInputType.emailAddress,
-                                  ),
-                                ],
-                              ),
-                            //],
                             const SizedBox(height: 10),
                           ],
                         ),
