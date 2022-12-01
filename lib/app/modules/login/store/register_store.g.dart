@@ -44,24 +44,33 @@ mixin _$RegisterStore on _RegisterStore, Store {
   late final _$fileAtom = Atom(name: '_RegisterStore.file', context: context);
 
   @override
-  XFile? get file {
+  File? get file {
     _$fileAtom.reportRead();
     return super.file;
   }
 
   @override
-  set file(XFile? value) {
+  set file(File? value) {
     _$fileAtom.reportWrite(value, super.file, () {
       super.file = value;
     });
   }
 
-  late final _$getImageAsyncAction =
-      AsyncAction('_RegisterStore.getImage', context: context);
+  late final _$pickImageAsyncAction =
+      AsyncAction('_RegisterStore.pickImage', context: context);
 
   @override
-  Future<XFile?> getImage() {
-    return _$getImageAsyncAction.run(() => super.getImage());
+  Future<dynamic> pickImage(ImageSource source) {
+    return _$pickImageAsyncAction.run(() => super.pickImage(source));
+  }
+
+  late final _$cropImageAsyncAction =
+      AsyncAction('_RegisterStore.cropImage', context: context);
+
+  @override
+  Future<File?> cropImage({required File imageFile}) {
+    return _$cropImageAsyncAction
+        .run(() => super.cropImage(imageFile: imageFile));
   }
 
   late final _$_RegisterStoreActionController =

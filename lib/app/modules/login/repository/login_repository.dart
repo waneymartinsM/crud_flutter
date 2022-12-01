@@ -20,6 +20,9 @@ class LoginRepository {
     }
   }
 
+//******************************************************************************
+
+  ///Registrar usuário:
   Future registerUser(UserModel model, User user) async {
     try {
       FirebaseFirestore.instance
@@ -60,6 +63,8 @@ class LoginRepository {
       }
     }
   }
+
+//******************************************************************************
 
   ///Fazer login:
   Future loginUser(UserModel model) async {
@@ -104,6 +109,8 @@ class LoginRepository {
       }
     }
   }
+
+//******************************************************************************
 
   ///Checar usuário logado:
   bool checkCurrentUser() {

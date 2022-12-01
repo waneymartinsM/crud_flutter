@@ -49,7 +49,7 @@ dependencies:
   image_picker: ^0.8.5+3
 
   #Biblioteca para carregamento de imagem
-  cached_network_image: ^3.2.1
+  cached_network_image: ^3.2.3
 
   #Bibliotecas para upload de imagens:
   image_cropper: ^3.0.0

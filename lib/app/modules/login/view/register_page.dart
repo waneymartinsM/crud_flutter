@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:crud_flutter/app/modules/login/store/register_store.dart';
 import 'package:crud_flutter/app/widgets/select_photo_options.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
@@ -6,13 +5,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/widgets/alert.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -30,35 +26,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final cpfController = TextEditingController();
   final passwordController = TextEditingController();
   final telController = TextEditingController();
-  File? file;
   String genreValue = "";
   String maritalStsValue = "";
   bool loading = false;
   bool passwordHide = true;
-
-  Future pickImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      File? img = File(image!.path);
-      img = await cropImage(imageFile: img);
-      setState(() {
-        file = img;
-        Modular.to.pop();
-      });
-    } on PlatformException catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      Modular.to.pop();
-    }
-  }
-
-  Future<File?> cropImage({required File imageFile}) async {
-    CroppedFile? croppedImage = await ImageCropper().cropImage(
-      sourcePath: imageFile.path,
-    );
-    return File(croppedImage!.path);
-  }
 
   void selectPhotoOptions() {
     showModalBottomSheet(
@@ -78,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
             return SingleChildScrollView(
               controller: scrollController,
               child: SelectPhotoOptions(
-                onTap: pickImage,
+                onTap: controller.pickImage,
               ),
             );
           }),
@@ -113,35 +84,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // GestureDetector(
-                    //   child: Center(
-                    //     child: controller.file == null
-                    //         ? const CircleAvatar(
-                    //             radius: 60,
-                    //             backgroundColor: lightPurple,
-                    //             child: Icon(
-                    //               Icons.camera_alt_outlined,
-                    //               size: 40,
-                    //               color: purple,
-                    //             ),
-                    //           )
-                    //         : CircleAvatar(
-                    //             radius: 60,
-                    //             backgroundImage: FileImage(
-                    //               controller.pickAndUploadImage(),
-                    //             ),
-                    //           ),
-                    //   ),
-                    //   onTap: () {
-                    //     FocusScope.of(context).unfocus();
-                    //     controller.getImage();
-                    //   },
-                    // ),
                     GestureDetector(
                       child: Center(
                         child: controller.file == null
                             ? const CircleAvatar(
-                                radius: 60,
+                                radius: 80,
                                 backgroundColor: lightPurple,
                                 child: Icon(
                                   Icons.photo_camera_outlined,
@@ -152,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             : CircleAvatar(
                                 radius: 60,
                                 backgroundImage: FileImage(
-                                  file!,
+                                  controller.file!,
                                 ),
                               ),
                       ),
@@ -473,9 +420,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               );
 
                               String url = '';
-                              if (file != null) {
+                              if (controller.file != null) {
                                 url = await controller.upload(
-                                  file!.path,
+                                  controller.file!.path,
                                   user.email,
                                 );
                               }

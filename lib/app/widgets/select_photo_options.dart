@@ -49,7 +49,7 @@ class SelectPhotoOptions extends StatelessWidget {
                   'OU',
                   style: TextStyle(
                     fontSize: 18,
-                    color: darkPurple,
+                    color: purple,
                     fontWeight: FontWeight.bold
                   ),
                 ),

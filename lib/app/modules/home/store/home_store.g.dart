@@ -60,24 +60,33 @@ mixin _$HomeStore on HomeStoreBase, Store {
   late final _$fileAtom = Atom(name: 'HomeStoreBase.file', context: context);
 
   @override
-  XFile? get file {
+  File? get file {
     _$fileAtom.reportRead();
     return super.file;
   }
 
   @override
-  set file(XFile? value) {
+  set file(File? value) {
     _$fileAtom.reportWrite(value, super.file, () {
       super.file = value;
     });
   }
 
-  late final _$getImageAsyncAction =
-      AsyncAction('HomeStoreBase.getImage', context: context);
+  late final _$pickImageAsyncAction =
+      AsyncAction('HomeStoreBase.pickImage', context: context);
 
   @override
-  Future<XFile?> getImage() {
-    return _$getImageAsyncAction.run(() => super.getImage());
+  Future<dynamic> pickImage(ImageSource source) {
+    return _$pickImageAsyncAction.run(() => super.pickImage(source));
+  }
+
+  late final _$cropImageAsyncAction =
+      AsyncAction('HomeStoreBase.cropImage', context: context);
+
+  @override
+  Future<File?> cropImage({required File imageFile}) {
+    return _$cropImageAsyncAction
+        .run(() => super.cropImage(imageFile: imageFile));
   }
 
   late final _$recoverUserDataAsyncAction =

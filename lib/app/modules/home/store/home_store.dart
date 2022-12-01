@@ -2,6 +2,10 @@ import 'dart:io';
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -28,43 +32,45 @@ abstract class HomeStoreBase with Store {
   UserModel userModel = UserModel();
 
   @observable
-  XFile? file;
+  File? file;
 
   @action
-  Future<XFile?> getImage() async {
-    final ImagePicker picker = ImagePicker();
-    XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    return image;
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      File? img = File(image!.path);
+      img = await cropImage(imageFile: img);
+      file = img;
+      Modular.to.pop();
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      Modular.to.pop();
+    }
   }
 
-  Future upload(String path, String cpf) async {
-    File file = File(path);
-    try {
-      String ref = 'images/img-$cpf.jpg';
-      final img = storage.ref(ref);
-      await img.putFile(file);
-      return await img.getDownloadURL();
-
-    } on FirebaseException catch (e) {
-      throw Exception('Erro no upload: ${e.code}');
-    }
+  @action
+  Future<File?> cropImage({required File imageFile}) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(
+      sourcePath: imageFile.path,
+    );
+    return File(croppedImage!.path);
   }
 
   @action
   recoverUserData() async {
     bool response = _repository.checkCurrentUser();
-    if(response){
+    if (response) {
       userModel = await _repository.recoverUserData();
     }
   }
 
   @action
-  clearVariables(){
+  clearVariables() {
     userModel = UserModel.clean();
   }
 
-
-  ///Validar campos de atualizações
   List validateUpdatedFields(UserModel model) {
     if (model.name.isEmpty) {
       return [AlertType.info, "Atenção", "Insira o seu nome!"];
@@ -76,7 +82,7 @@ abstract class HomeStoreBase with Store {
       return [
         AlertType.info,
         "Atenção",
-        "Insira um número de telefone válido para prosseguirmos!"
+        "Insira um número de telefone válido para prosseguirmos!",
       ];
     }
     return [true];

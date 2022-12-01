@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/modules/home/repository/home_repository.dart';
 import 'package:crud_flutter/app/modules/home/store/home_store.dart';
@@ -9,13 +8,10 @@ import 'package:crud_flutter/app/widgets/input_customized.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
 import 'package:crud_flutter/app/widgets/select_photo_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,7 +34,6 @@ class _HomePageState extends State<HomePage> {
   String genreValue = "";
   String maritalStsValue = "";
   bool loading = false;
-  File? file;
 
   void onInit() async {
     await controller.recoverUserData();
@@ -53,30 +48,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     onInit();
     super.initState();
-  }
-
-  Future pickImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      File? img = File(image!.path);
-      img = await cropImage(imageFile: img);
-      setState(() {
-        file = img;
-        Modular.to.pop();
-      });
-    } on PlatformException catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      Modular.to.pop();
-    }
-  }
-
-  Future<File?> cropImage({required File imageFile}) async {
-    CroppedFile? croppedImage = await ImageCropper().cropImage(
-      sourcePath: imageFile.path,
-    );
-    return File(croppedImage!.path);
   }
 
   void selectPhotoOptions() {
@@ -97,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             return SingleChildScrollView(
               controller: scrollController,
               child: SelectPhotoOptions(
-                onTap: pickImage,
+                onTap: controller.pickImage,
               ),
             );
           }),
@@ -176,47 +147,76 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            Center(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(150),
-                                child: Image.network(
-                                  controller.userModel.userImage,
-                                  width: 150,
-                                  height: 150,
-                                  fit: BoxFit.cover,
-                                ),
+                            GestureDetector(
+                              onTap: () {
+                                controller.readOnly
+                                    ? null
+                                    : selectPhotoOptions();
+                              },
+                              child: Stack(
+                                children: [
+                                  SizedBox(
+                                    height: 180,
+                                    width: 180,
+                                    child: Card(
+                                      elevation: 8.0,
+                                      color: Colors.white.withOpacity(0.2),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(150),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(150),
+                                        child: controller.file == null
+                                            ? CachedNetworkImage(
+                                                filterQuality:
+                                                    FilterQuality.high,
+                                                color: controller.readOnly
+                                                    ? null
+                                                    : Colors.black
+                                                        .withOpacity(0.5),
+                                                colorBlendMode:
+                                                    BlendMode.colorBurn,
+                                                imageUrl: controller.userModel
+                                                        .userImage.isEmpty
+                                                    ? "https://www.kindpng.com/picc/m/22-223863_no-avatar-png-circle-transparent-png.png"
+                                                    : controller
+                                                        .userModel.userImage,
+                                                fit: BoxFit.cover,
+                                                errorWidget: (
+                                                  context,
+                                                  url,
+                                                  error,
+                                                ) =>
+                                                    const Icon(
+                                                  Icons.error,
+                                                ),
+                                              )
+                                            : Image.file(
+                                                controller.file!,
+                                                filterQuality:
+                                                    FilterQuality.high,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                  if (controller.readOnly == false)
+                                    Positioned(
+                                      right: 0,
+                                      left: 0,
+                                      top: 0,
+                                      bottom: 0,
+                                      child: Icon(
+                                        Icons.camera_alt_outlined,
+                                        color: Colors.white.withOpacity(0.6),
+                                        size: 45,
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 15),
-                            controller.readOnly
-                                ? const Text(
-                                    "Foto do usuário",
-                                    style: TextStyle(
-                                      color: purple,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                : GestureDetector(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Text(
-                                          "Alterar foto de perfil",
-                                          style: TextStyle(
-                                            color: purple,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    onTap: () {
-                                      selectPhotoOptions();
-                                    },
-                                  ),
                             const SizedBox(height: 15),
                             InputCustomized(
                               icon: Icons.person,
@@ -306,7 +306,15 @@ class _HomePageState extends State<HomePage> {
                                             setState(
                                               () => loading = false,
                                             );
-                                          } else {
+                                          }
+                                          if (controller.file != null) {
+                                            _repository.updateUserImage(
+                                              imageFile: controller.file!,
+                                              oldImageUrl: controller
+                                                  .userModel.userImage,
+                                            );
+                                          }
+                                          else {
                                             alertDialog(
                                               context,
                                               AlertType.error,
@@ -314,7 +322,8 @@ class _HomePageState extends State<HomePage> {
                                               'Ocorreu um erro ao atualizar perfil!',
                                             );
                                           }
-                                        } else {
+                                        }
+                                        else {
                                           alertDialog(
                                             context,
                                             AlertType.error,
