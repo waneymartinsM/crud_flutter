@@ -14,11 +14,4 @@ This repository is still under development and I will continue to add more featu
 - MobX
 - Firebase
 
-##  📌 Improvements
-
-- Save photo (using camera and gallery) of the user in Firebase Storage;
-
-- Edit user photo;
-
-- Delete user.
 
