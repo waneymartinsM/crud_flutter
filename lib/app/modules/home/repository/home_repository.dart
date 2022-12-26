@@ -25,8 +25,8 @@ class HomeRepository {
   ///Atualizar dados do usuário:
   Future<bool> updateUserData(UserModel model) async {
     try {
-      dataBase
-          .collection(FirebaseConst.usuarios)
+      await _auth.currentUser?.updateEmail(model.email);
+      await dataBase.collection(FirebaseConst.usuarios)
           .doc(_auth.currentUser!.uid)
           .update({
         "name": model.name,

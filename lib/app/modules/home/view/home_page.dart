@@ -98,6 +98,7 @@ class _HomePageState extends State<HomePage> {
             leading: controller.readOnly
                 ? IconButton(
                     onPressed: () async {
+                      // Modular.to.push(MaterialPageRoute(builder: (_)=> GabrielPage()));
                       controller.recoverUserData();
                       controller.changeReadOnly(false);
                     },
@@ -130,7 +131,7 @@ class _HomePageState extends State<HomePage> {
           ),
           body: SafeArea(
             child: Observer(
-              builder: (_) => controller.loading
+              builder: (_) => loading
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -284,53 +285,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        final user = UserModel(
-                                          name: nameController.text,
-                                          email: emailController.text,
-                                          cpf: cpfController.text,
-                                          phone: telController.text,
-                                          password: passwordController.text,
-                                          maritalStatus: maritalStsValue,
-                                          genre: genreValue,
-                                        );
-                                        List result = controller
-                                            .validateUpdatedFields(user);
-
-                                        if (result.first == true) {
-                                          setState(
-                                            () => loading = true,
-                                          );
-                                          bool result = await _repository
-                                              .updateUserData(user);
-                                          if (result) {
-                                            setState(
-                                              () => loading = false,
-                                            );
-                                          }
-                                          if (controller.file != null) {
-                                            _repository.updateUserImage(
-                                              imageFile: controller.file!,
-                                              oldImageUrl: controller
-                                                  .userModel.userImage,
-                                            );
-                                          }
-                                          else {
-                                            alertDialog(
-                                              context,
-                                              AlertType.error,
-                                              'Erro',
-                                              'Ocorreu um erro ao atualizar perfil!',
-                                            );
-                                          }
-                                        }
-                                        else {
-                                          alertDialog(
-                                            context,
-                                            AlertType.error,
-                                            'Erro',
-                                            result[2],
-                                          );
-                                        }
+                                        await _saveChange();
                                       },
                                       child: const Text(
                                         "Salvar alterações",
@@ -388,5 +343,47 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Future _saveChange() async {
+    final user = UserModel(
+      name: nameController.text,
+      email: emailController.text,
+      cpf: cpfController.text,
+      phone: telController.text,
+      password: passwordController.text,
+      maritalStatus: maritalStsValue,
+      genre: genreValue,
+    );
+    List result = controller.validateUpdatedFields(user);
+
+    if (result.first == true) {
+      setState(() => loading = true);
+      if (controller.file != null) {
+        _repository.updateUserImage(
+          imageFile: controller.file!,
+          oldImageUrl: controller.userModel.userImage,
+        );
+      }
+      await _repository.updateUserData(user).then((value) {
+        controller.changeReadOnly(true);
+      }).catchError((_) {
+        alertDialog(
+          context,
+          AlertType.error,
+          'Erro',
+          'Ocorreu um erro ao atualizar perfil!',
+        );
+      });
+
+      setState(() => loading = false);
+    } else {
+      alertDialog(
+        context,
+        AlertType.error,
+        'Erro',
+        result[2],
+      );
+    }
   }
 }
