@@ -32,6 +32,9 @@ abstract class LoginStoreBase with Store {
   @observable
   dynamic result = false;
 
+  @observable
+  bool passwordHide = true;
+
   ///Entrar com e-mail e senha:
   @action
   Future signInWithEmailAndPassword(context) async {

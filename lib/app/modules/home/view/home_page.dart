@@ -33,7 +33,6 @@ class _HomePageState extends State<HomePage> {
   final _repository = HomeRepository();
   String genreValue = "";
   String maritalStsValue = "";
-  bool loading = false;
 
   void onInit() async {
     await controller.recoverUserData();
@@ -98,7 +97,6 @@ class _HomePageState extends State<HomePage> {
             leading: controller.readOnly
                 ? IconButton(
                     onPressed: () async {
-                      // Modular.to.push(MaterialPageRoute(builder: (_)=> GabrielPage()));
                       controller.recoverUserData();
                       controller.changeReadOnly(false);
                     },
@@ -131,13 +129,13 @@ class _HomePageState extends State<HomePage> {
           ),
           body: SafeArea(
             child: Observer(
-              builder: (_) => loading
+              builder: (_) => controller.loading
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
                           Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(color: purple),
                           )
                         ],
                       ),
@@ -181,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                                                     BlendMode.colorBurn,
                                                 imageUrl: controller.userModel
                                                         .userImage.isEmpty
-                                                    ? "https://www.kindpng.com/picc/m/22-223863_no-avatar-png-circle-transparent-png.png"
+                                                    ? "https://img.myloview.com.br/posters/user-icon-human-person-symbol-avatar-login-sign-700-258992648.jpg"
                                                     : controller
                                                         .userModel.userImage,
                                                 fit: BoxFit.cover,
@@ -358,7 +356,7 @@ class _HomePageState extends State<HomePage> {
     List result = controller.validateUpdatedFields(user);
 
     if (result.first == true) {
-      setState(() => loading = true);
+      setState(() => controller.loading = true);
       if (controller.file != null) {
         _repository.updateUserImage(
           imageFile: controller.file!,
@@ -376,7 +374,7 @@ class _HomePageState extends State<HomePage> {
         );
       });
 
-      setState(() => loading = false);
+      setState(() => controller.loading = false);
     } else {
       alertDialog(
         context,

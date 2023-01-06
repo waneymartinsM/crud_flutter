@@ -79,6 +79,22 @@ mixin _$LoginStore on LoginStoreBase, Store {
     });
   }
 
+  late final _$passwordHideAtom =
+      Atom(name: 'LoginStoreBase.passwordHide', context: context);
+
+  @override
+  bool get passwordHide {
+    _$passwordHideAtom.reportRead();
+    return super.passwordHide;
+  }
+
+  @override
+  set passwordHide(bool value) {
+    _$passwordHideAtom.reportWrite(value, super.passwordHide, () {
+      super.passwordHide = value;
+    });
+  }
+
   late final _$signInWithEmailAndPasswordAsyncAction = AsyncAction(
       'LoginStoreBase.signInWithEmailAndPassword',
       context: context);
@@ -121,6 +137,7 @@ email: ${email},
 password: ${password},
 loading: ${loading},
 result: ${result},
+passwordHide: ${passwordHide},
 finish: ${finish}
     ''';
   }
