@@ -9,19 +9,35 @@ part of 'register_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$RegisterStore on _RegisterStore, Store {
-  late final _$viewPasswordAtom =
-      Atom(name: '_RegisterStore.viewPassword', context: context);
+  late final _$passwordHideAtom =
+      Atom(name: '_RegisterStore.passwordHide', context: context);
 
   @override
-  bool get viewPassword {
-    _$viewPasswordAtom.reportRead();
-    return super.viewPassword;
+  bool get passwordHide {
+    _$passwordHideAtom.reportRead();
+    return super.passwordHide;
   }
 
   @override
-  set viewPassword(bool value) {
-    _$viewPasswordAtom.reportWrite(value, super.viewPassword, () {
-      super.viewPassword = value;
+  set passwordHide(bool value) {
+    _$passwordHideAtom.reportWrite(value, super.passwordHide, () {
+      super.passwordHide = value;
+    });
+  }
+
+  late final _$loadingAtom =
+      Atom(name: '_RegisterStore.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
     });
   }
 
@@ -56,6 +72,38 @@ mixin _$RegisterStore on _RegisterStore, Store {
     });
   }
 
+  late final _$genreValueAtom =
+      Atom(name: '_RegisterStore.genreValue', context: context);
+
+  @override
+  String get genreValue {
+    _$genreValueAtom.reportRead();
+    return super.genreValue;
+  }
+
+  @override
+  set genreValue(String value) {
+    _$genreValueAtom.reportWrite(value, super.genreValue, () {
+      super.genreValue = value;
+    });
+  }
+
+  late final _$maritalStsValueAtom =
+      Atom(name: '_RegisterStore.maritalStsValue', context: context);
+
+  @override
+  String get maritalStsValue {
+    _$maritalStsValueAtom.reportRead();
+    return super.maritalStsValue;
+  }
+
+  @override
+  set maritalStsValue(String value) {
+    _$maritalStsValueAtom.reportWrite(value, super.maritalStsValue, () {
+      super.maritalStsValue = value;
+    });
+  }
+
   late final _$pickImageAsyncAction =
       AsyncAction('_RegisterStore.pickImage', context: context);
 
@@ -73,15 +121,31 @@ mixin _$RegisterStore on _RegisterStore, Store {
         .run(() => super.cropImage(imageFile: imageFile));
   }
 
+  late final _$uploadAsyncAction =
+      AsyncAction('_RegisterStore.upload', context: context);
+
+  @override
+  Future<dynamic> upload(String path, String email) {
+    return _$uploadAsyncAction.run(() => super.upload(path, email));
+  }
+
+  late final _$signUpUserAsyncAction =
+      AsyncAction('_RegisterStore.signUpUser', context: context);
+
+  @override
+  Future<bool> signUpUser(UserModel model) {
+    return _$signUpUserAsyncAction.run(() => super.signUpUser(model));
+  }
+
   late final _$_RegisterStoreActionController =
       ActionController(name: '_RegisterStore', context: context);
 
   @override
-  void boolViewPassword() {
+  void viewPassword() {
     final _$actionInfo = _$_RegisterStoreActionController.startAction(
-        name: '_RegisterStore.boolViewPassword');
+        name: '_RegisterStore.viewPassword');
     try {
-      return super.boolViewPassword();
+      return super.viewPassword();
     } finally {
       _$_RegisterStoreActionController.endAction(_$actionInfo);
     }
@@ -90,9 +154,12 @@ mixin _$RegisterStore on _RegisterStore, Store {
   @override
   String toString() {
     return '''
-viewPassword: ${viewPassword},
+passwordHide: ${passwordHide},
+loading: ${loading},
 userModel: ${userModel},
-file: ${file}
+file: ${file},
+genreValue: ${genreValue},
+maritalStsValue: ${maritalStsValue}
     ''';
   }
 }

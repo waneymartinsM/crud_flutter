@@ -26,7 +26,8 @@ class HomeRepository {
   Future<bool> updateUserData(UserModel model) async {
     try {
       await _auth.currentUser?.updateEmail(model.email);
-      await dataBase.collection(FirebaseConst.usuarios)
+      await dataBase
+          .collection(FirebaseConst.usuarios)
           .doc(_auth.currentUser!.uid)
           .update({
         "name": model.name,
@@ -72,6 +73,28 @@ class HomeRepository {
         .collection(FirebaseConst.usuarios)
         .doc(_auth.currentUser!.uid)
         .update({"imagem_usuario": imageLink});
+  }
+
+//******************************************************************************
+
+  /// Excluir conta do usuário:
+  Future<bool> deleteAccount() async {
+    try {
+      User user = _auth.currentUser!;
+      await dataBase.collection(FirebaseConst.usuarios).doc(user.uid).delete();
+      String? imageUrl = (await dataBase
+              .collection(FirebaseConst.usuarios)
+              .doc(user.uid)
+              .get())
+          .data()?["imagem_usuario"];
+      if (imageUrl != null) {
+        await FirebaseStorage.instance.refFromURL(imageUrl).delete();
+      }
+      await user.delete();
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
 //******************************************************************************

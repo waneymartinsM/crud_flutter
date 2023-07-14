@@ -100,9 +100,9 @@ mixin _$LoginStore on LoginStoreBase, Store {
       context: context);
 
   @override
-  Future<dynamic> signInWithEmailAndPassword(dynamic context) {
+  Future<bool> signInWithEmailAndPassword(UserModel model) {
     return _$signInWithEmailAndPasswordAsyncAction
-        .run(() => super.signInWithEmailAndPassword(context));
+        .run(() => super.signInWithEmailAndPassword(model));
   }
 
   late final _$LoginStoreBaseActionController =
@@ -125,6 +125,17 @@ mixin _$LoginStore on LoginStoreBase, Store {
         name: 'LoginStoreBase.setPassword');
     try {
       return super.setPassword(text);
+    } finally {
+      _$LoginStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void viewPassword() {
+    final _$actionInfo = _$LoginStoreBaseActionController.startAction(
+        name: 'LoginStoreBase.viewPassword');
+    try {
+      return super.viewPassword();
     } finally {
       _$LoginStoreBaseActionController.endAction(_$actionInfo);
     }

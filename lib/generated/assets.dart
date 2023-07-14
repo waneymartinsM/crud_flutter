@@ -2,9 +2,12 @@
 class Assets {
   Assets._();
 
+  static const String fontsSyne = 'assets/fonts/Syne.ttf';
+  static const String imagesCamera = 'assets/images/camera.png';
   static const String imagesChat = 'assets/images/chat.svg';
   static const String imagesLogin = 'assets/images/login.svg';
   static const String imagesLoginBottom = 'assets/images/login_bottom.png';
   static const String imagesMainBottom = 'assets/images/main_bottom.png';
   static const String imagesMainTop = 'assets/images/main_top.png';
+
 }

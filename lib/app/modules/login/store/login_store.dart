@@ -14,17 +14,14 @@ abstract class LoginStoreBase with Store {
   @observable
   String email = "";
 
-  @action
-  void setEmail(String text) => email = text;
-
   @observable
   String password = "";
 
   @action
-  void setPassword(String text) => password = text;
+  void setEmail(String text) => email = text;
 
-  @computed
-  bool get finish => email.isNotEmpty && password.isNotEmpty;
+  @action
+  void setPassword(String text) => password = text;
 
   @observable
   bool loading = false;
@@ -35,27 +32,21 @@ abstract class LoginStoreBase with Store {
   @observable
   bool passwordHide = true;
 
-  ///Entrar com e-mail e senha:
   @action
-  Future signInWithEmailAndPassword(context) async {
-    if (finish) {
-      loading = true;
-      final user = UserModel();
+  void viewPassword() => passwordHide = !passwordHide;
 
-      user.email = email.trim();
-      user.password = password.trim();
+  @computed
+  bool get finish => email.isNotEmpty && password.isNotEmpty;
 
-      result = await LoginRepository().loginUser(user);
-      loading = false;
-
-      if (result != true) {
-        alertDialog(context, AlertType.info, "ATENÇÃO", result);
-      } else {
-        Modular.to.navigate('/home');
-      }
+  @action
+  Future<bool> signInWithEmailAndPassword(UserModel model) async {
+    final repository = LoginRepository();
+    final user = await repository.loginUser(model);
+    if(user != null){
+      return await repository.loginUser(model);
     } else {
-      alertDialog(context, AlertType.info, "ATENÇÃO",
-          "Preencha todos os campos para prosseguirmos!");
+      return alertDialog(context, AlertType.info, "ATENÇÃO", result);
+      //return false;
     }
   }
 }

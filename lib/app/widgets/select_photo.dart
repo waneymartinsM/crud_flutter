@@ -1,5 +1,6 @@
 import 'package:crud_flutter/app/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SelectPhoto extends StatelessWidget {
   const SelectPhoto({
@@ -23,27 +24,16 @@ class SelectPhoto extends StatelessWidget {
         shape: const StadiumBorder(),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 6,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              color: purple,
-            ),
-            const SizedBox(
-              width: 14,
-            ),
+            Icon(icon, color: purple),
+            const SizedBox(width: 14),
             Text(
               textLabel,
-              style: const TextStyle(
-                fontSize: 18,
-                color: purple,
-              ),
-            )
+              style: GoogleFonts.syne(fontSize: 18, color: purple),
+            ),
           ],
         ),
       ),

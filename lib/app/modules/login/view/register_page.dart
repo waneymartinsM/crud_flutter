@@ -1,4 +1,7 @@
 import 'package:crud_flutter/app/modules/login/store/register_store.dart';
+import 'package:crud_flutter/app/widgets/custom_animated_button.dart';
+import 'package:crud_flutter/app/widgets/custom_text_field.dart';
+import 'package:crud_flutter/app/widgets/custom_text_field_password.dart';
 import 'package:crud_flutter/app/widgets/select_photo_options.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:validatorless/validatorless.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -19,17 +24,14 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final RegisterStore controller = Modular.get();
+  final controller = Modular.get<RegisterStore>();
+  final _formKey = GlobalKey<FormState>();
   final FirebaseStorage storage = FirebaseStorage.instance;
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final cpfController = TextEditingController();
-  final passwordController = TextEditingController();
-  final telController = TextEditingController();
-  String genreValue = "";
-  String maritalStsValue = "";
-  bool loading = false;
-  bool passwordHide = true;
+  final name = TextEditingController();
+  final email = TextEditingController();
+  final cpf = TextEditingController();
+  final password = TextEditingController();
+  final phone = TextEditingController();
 
   void selectPhotoOptions() {
     showModalBottomSheet(
@@ -58,420 +60,394 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Observer(
       builder: (_) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Modular.to.pushNamed('/login');
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: purple,
-            ),
-          ),
-        ),
-        body: loading == true
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: purple,
-                ),
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      child: Center(
-                        child: controller.file == null
-                            ? const CircleAvatar(
-                                radius: 80,
-                                backgroundColor: lightPurple,
-                                child: Icon(
-                                  Icons.photo_camera_outlined,
-                                  size: 50,
-                                  color: purple,
-                                ),
-                              )
-                            : CircleAvatar(
-                                radius: 60,
-                                backgroundImage: FileImage(
-                                  controller.file!,
-                                ),
-                              ),
-                      ),
-                      onTap: () {
-                        selectPhotoOptions();
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    GestureDetector(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            "Adicionar uma foto de perfil",
-                            style: TextStyle(
-                              color: purple,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        selectPhotoOptions();
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0,
-                        vertical: 12.0,
-                      ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: lightPurple,
-                          prefixIcon: const Icon(
-                            Icons.person,
-                            color: purple,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: "Nome",
-                        ),
-                        cursorColor: purple,
-                        controller: nameController,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0,
-                        vertical: 12.0,
-                      ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: lightPurple,
-                          prefixIcon: const Icon(
-                            Icons.email_outlined,
-                            color: purple,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: "E-mail",
-                        ),
-                        cursorColor: purple,
-                        controller: emailController,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0,
-                        vertical: 12.0,
-                      ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: lightPurple,
-                          prefixIcon: const Icon(
-                            Icons.credit_card_rounded,
-                            color: purple,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: "CPF",
-                        ),
-                        cursorColor: purple,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          CpfInputFormatter(),
-                        ],
-                        controller: cpfController,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0,
-                        vertical: 12.0,
-                      ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: lightPurple,
-                          prefixIcon: const Icon(
-                            Icons.phone,
-                            color: purple,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: "Telefone",
-                        ),
-                        cursorColor: purple,
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          TelefoneInputFormatter(),
-                        ],
-                        controller: telController,
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        const Text(
-                          "Estado civil",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: purple,
-                          ),
-                        ),
-                        ListTile(
-                          title: const Text(
-                            "Casado(a)",
-                          ),
-                          leading: Radio(
-                              value: "Casado(a)",
-                              groupValue: maritalStsValue,
-                              activeColor: purple,
-                              onChanged: (value) {
-                                setState(() {
-                                  maritalStsValue = value as String;
-                                });
-                              }),
-                        ),
-                        ListTile(
-                          title: const Text(
-                            "Solteiro(a)",
-                          ),
-                          leading: Radio(
-                              value: "Solteiro(a)",
-                              groupValue: maritalStsValue,
-                              activeColor: purple,
-                              onChanged: (value) {
-                                setState(() {
-                                  maritalStsValue = value as String;
-                                });
-                              }),
-                        ),
-                        ListTile(
-                          title: const Text(
-                            "Divorciado(a)",
-                          ),
-                          leading: Radio(
-                              value: "Divorciado(a)",
-                              groupValue: maritalStsValue,
-                              activeColor: purple,
-                              onChanged: (value) {
-                                setState(() {
-                                  maritalStsValue = value as String;
-                                });
-                              }),
-                        ),
-                        ListTile(
-                          title: const Text(
-                            "Viúvo(a)",
-                          ),
-                          leading: Radio(
-                              value: "Viúvo(a)",
-                              groupValue: maritalStsValue,
-                              activeColor: purple,
-                              onChanged: (value) {
-                                setState(() {
-                                  maritalStsValue = value as String;
-                                });
-                              }),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        const Text(
-                          "Sexo",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: purple,
-                          ),
-                        ),
-                        ListTile(
-                          title: const Text(
-                            "Masculino",
-                          ),
-                          leading: Radio(
-                              value: "Masculino",
-                              groupValue: genreValue,
-                              activeColor: purple,
-                              onChanged: (value) {
-                                setState(() {
-                                  genreValue = value as String;
-                                });
-                              }),
-                        ),
-                        ListTile(
-                          title: const Text(
-                            "Feminino",
-                          ),
-                          leading: Radio(
-                              value: "Feminino",
-                              groupValue: genreValue,
-                              activeColor: purple,
-                              onChanged: (value) {
-                                setState(() {
-                                  genreValue = value as String;
-                                });
-                              }),
-                        ),
-                        ListTile(
-                          title: const Text("Outro(s)"),
-                          leading: Radio(
-                              value: "Outro(s)",
-                              groupValue: genreValue,
-                              activeColor: purple,
-                              onChanged: (value) {
-                                setState(() {
-                                  genreValue = value as String;
-                                });
-                              }),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0,
-                        vertical: 12.0,
-                      ),
-                      child: TextFormField(
-                        obscureText: passwordHide,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: lightPurple,
-                          prefixIcon: const Icon(
-                            Icons.lock_outlined,
-                            color: purple,
-                          ),
-                          suffixIcon: IconButton(
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onPressed: () {
-                                if (passwordHide == true) {
-                                  setState(() {
-                                    passwordHide = false;
-                                  });
-                                } else {
-                                  setState(() {
-                                    passwordHide = true;
-                                  });
-                                }
-                              },
-                              icon: Icon(
-                                passwordHide == true
-                                    ? Icons.remove_red_eye
-                                    : Icons.visibility_off,
-                                color: purple,
-                              )),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: "Senha",
-                        ),
-                        cursorColor: purple,
-                        controller: passwordController,
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 10,
-                      ),
-                      width: size.width * 0.6,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(29),
-                        child: TextButton(
-                          onPressed: () async {
-                            final user = UserModel(
-                              name: nameController.text,
-                              email: emailController.text,
-                              cpf: cpfController.text,
-                              phone: telController.text,
-                              password: passwordController.text,
-                              maritalStatus: maritalStsValue,
-                              genre: genreValue,
-                            );
-                            List result = controller.validateFields(user);
-
-                            if (result.first == true) {
-                              setState(
-                                () => loading = true,
-                              );
-
-                              String url = '';
-                              if (controller.file != null) {
-                                url = await controller.upload(
-                                  controller.file!.path,
-                                  user.email,
-                                );
-                              }
-                              user.userImage = url;
-
-                              bool result = await controller.signUpUser(user);
-                              if (result) {
-                                Modular.to.navigate('/home');
-                                setState(
-                                  () => loading = false,
-                                );
-                              } else {
-                                alertDialog(
-                                  context,
-                                  AlertType.error,
-                                  'ATENÇÃO',
-                                  'Usuário já existe!\n Tente novamente.',
-                                );
-                              }
-                            } else {
-                              final info = result[0];
-                              final title = result[1];
-                              final description = result[2];
-                              alertDialog(
-                                context,
-                                info,
-                                title,
-                                description,
-                              );
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 40,
-                            ),
-                            backgroundColor: purple,
-                          ),
-                          child: const Text(
-                            'REGISTRAR',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+        appBar: buildAppBar(),
+        body: controller.loading == true
+            ? const Center(child: CircularProgressIndicator(color: purple))
+            : _buildBody(context),
       ),
     );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildAddPhoto(),
+          const SizedBox(height: 10),
+          _buildAddPhotoText(),
+          const SizedBox(height: 20),
+          _buildForm(),
+        ],
+      ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: white,
+      elevation: 0,
+      leading: IconButton(
+        onPressed: () {
+          Modular.to.pushNamed('/login');
+        },
+        icon: const Icon(Icons.arrow_back, color: darkPurple),
+      ),
+    );
+  }
+
+  Widget _buildAddPhoto() {
+    return GestureDetector(
+      child: Center(
+          child: controller.file == null
+              ? CircleAvatar(
+                  radius: 60,
+                  backgroundColor: lightPurple,
+                  child: Image.asset('assets/images/camera.png',
+                      color: darkPurple),
+                )
+              : CircleAvatar(
+                  radius: 60,
+                  backgroundImage: FileImage(controller.file!),
+                )),
+      onTap: () {
+        selectPhotoOptions();
+      },
+    );
+  }
+
+  Widget _buildAddPhotoText() {
+    return GestureDetector(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Adicione uma foto de perfil",
+            style: GoogleFonts.syne(
+              color: darkPurple,
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+      onTap: () {
+        selectPhotoOptions();
+      },
+    );
+  }
+
+  Widget _buildForm() {
+    return Form(
+      key: _formKey,
+      autovalidateMode: AutovalidateMode.disabled,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            CustomTextField(
+              hintText: 'Nome',
+              icon: const Icon(Icons.person_outline_rounded, color: grey),
+              textInputType: TextInputType.text,
+              controller: name,
+              validator: Validatorless.multiple([
+                Validatorless.required('Preencha o campo com o seu nome.'),
+                Validatorless.min(3, 'O nome deve ter no mínimo 3 caracteres.'),
+                Validatorless.max(
+                    30, 'O nome deve ter no máximo 30 caracteres'),
+              ]),
+            ),
+            const SizedBox(height: 20),
+            CustomTextField(
+              hintText: 'E-mail',
+              icon: const Icon(Icons.alternate_email_rounded, color: grey),
+              textInputType: TextInputType.emailAddress,
+              controller: email,
+              validator: Validatorless.multiple([
+                Validatorless.required('Preencha o campo com o seu e-mail.'),
+                Validatorless.email('E-mail inválido.'),
+              ]),
+            ),
+            const SizedBox(height: 20),
+            CustomTextField(
+              hintText: 'CPF',
+              icon: const Icon(Icons.person, color: grey),
+              textInputType: TextInputType.number,
+              controller: cpf,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                CpfInputFormatter(),
+              ],
+              validator: Validatorless.multiple([
+                Validatorless.required('Preencha o campo com o seu CPF.'),
+                Validatorless.cpf('CPF inválido.'),
+                Validatorless.min(11, 'O CPF deve ter 11 dígitos.')
+              ]),
+            ),
+            const SizedBox(height: 20),
+            CustomTextField(
+              hintText: 'Celular',
+              icon: const Icon(Icons.phone, color: grey),
+              textInputType: TextInputType.phone,
+              controller: phone,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                TelefoneInputFormatter(),
+              ],
+              validator: Validatorless.multiple([
+                Validatorless.required('Preencha o campo com o seu Telefone.'),
+                Validatorless.min(14, 'O telefone deve ter 14 dígitos')
+              ]),
+            ),
+            const SizedBox(height: 20),
+            _buildMaritalStatus(),
+            const SizedBox(height: 20),
+            _buildGender(),
+            const SizedBox(height: 20),
+            CustomTextFieldPassword(
+              hintText: 'Senha',
+              icon: const Icon(Icons.lock_outline_rounded, color: grey),
+              onTapPassword: () {
+                controller.viewPassword();
+              },
+              visualizar: controller.passwordHide,
+              password: true,
+              obscureText: controller.passwordHide,
+              textInputType: TextInputType.visiblePassword,
+              controller: password,
+              validator: Validatorless.multiple([
+                Validatorless.required('Preencha o campo com a sua senha'),
+                Validatorless.min(6, 'A senha deve ter no mínimo 6 caracteres'),
+                Validatorless.max(
+                    20, 'A senha deve ter no máximo 20 caracteres'),
+              ]),
+            ),
+            const SizedBox(height: 20),
+            _buildButtonSignUp(),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMaritalStatus() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          color: lightPurple, borderRadius: BorderRadius.circular(11)),
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Selecione seu Estado Civil",
+            style: GoogleFonts.syne(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              color: darkPurple,
+            ),
+          ),
+          ListTile(
+            title: Text(
+              "Casado(a)",
+              style: GoogleFonts.syne(
+                  fontWeight: FontWeight.w500, fontSize: 15, color: black),
+            ),
+            leading: Radio(
+              value: "Casado(a)",
+              groupValue: controller.maritalStsValue,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              activeColor: purple,
+              onChanged: (value) {
+                setState(() {
+                  controller.maritalStsValue = value as String;
+                });
+              },
+            ),
+          ),
+          ListTile(
+            title: Text(
+              "Solteiro(a)",
+              style: GoogleFonts.syne(
+                  fontWeight: FontWeight.w500, fontSize: 15, color: black),
+            ),
+            leading: Radio(
+                value: "Solteiro(a)",
+                groupValue: controller.maritalStsValue,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: purple,
+                onChanged: (value) {
+                  setState(() {
+                    controller.maritalStsValue = value as String;
+                  });
+                }),
+          ),
+          ListTile(
+            title: Text(
+              "Divorciado(a)",
+              style: GoogleFonts.syne(
+                  fontWeight: FontWeight.w500, fontSize: 15, color: black),
+            ),
+            leading: Radio(
+                value: "Divorciado(a)",
+                groupValue: controller.maritalStsValue,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: purple,
+                onChanged: (value) {
+                  setState(() {
+                    controller.maritalStsValue = value as String;
+                  });
+                }),
+          ),
+          ListTile(
+            title: Text(
+              "Viúvo(a)",
+              style: GoogleFonts.syne(
+                  fontWeight: FontWeight.w500, fontSize: 15, color: black),
+            ),
+            leading: Radio(
+                value: "Viúvo(a)",
+                groupValue: controller.maritalStsValue,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: purple,
+                onChanged: (value) {
+                  setState(() {
+                    controller.maritalStsValue = value as String;
+                  });
+                }),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGender() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          color: lightPurple, borderRadius: BorderRadius.circular(11)),
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Selecione seu Gênero",
+            style: GoogleFonts.syne(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              color: darkPurple,
+            ),
+          ),
+          ListTile(
+            title: Text(
+              "Masculino",
+              style: GoogleFonts.syne(
+                  fontWeight: FontWeight.w500, fontSize: 15, color: black),
+            ),
+            leading: Radio(
+                value: "Masculino",
+                groupValue: controller.genreValue,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: purple,
+                onChanged: (value) {
+                  setState(() {
+                    controller.genreValue = value as String;
+                  });
+                }),
+          ),
+          ListTile(
+            title: Text(
+              "Feminino",
+              style: GoogleFonts.syne(
+                  fontWeight: FontWeight.w500, fontSize: 15, color: black),
+            ),
+            leading: Radio(
+                value: "Feminino",
+                groupValue: controller.genreValue,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: purple,
+                onChanged: (value) {
+                  setState(() {
+                    controller.genreValue = value as String;
+                  });
+                }),
+          ),
+          ListTile(
+            title: Text(
+              "Outro(s)",
+              style: GoogleFonts.syne(
+                  fontWeight: FontWeight.w500, fontSize: 15, color: black),
+            ),
+            leading: Radio(
+                value: "Outro(s)",
+                groupValue: controller.genreValue,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: purple,
+                onChanged: (value) {
+                  setState(() {
+                    controller.genreValue = value as String;
+                  });
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonSignUp() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 45),
+      child: CustomAnimatedButton(
+        onTap: () async {
+          signUp();
+        },
+        widhtMultiply: 1,
+        height: 45,
+        colorText: white,
+        color: purple,
+        text: "REGISTRAR",
+      ),
+    );
+  }
+
+  signUp() async {
+    final isValid = _formKey.currentState?.validate() ?? false;
+    final user = UserModel(
+      name: name.text,
+      email: email.text,
+      cpf: cpf.text,
+      phone: phone.text,
+      password: password.text,
+      maritalStatus: controller.maritalStsValue,
+      genre: controller.genreValue,
+    );
+
+    if (isValid) {
+      List result = controller.validateFields(user);
+      if (result.first == true) {
+        setState(() => controller.loading = true);
+        String url = '';
+        if (controller.file != null) {
+          url = await controller.upload(controller.file!.path, user.email);
+        }
+        user.userImage = url;
+        bool result = await controller.signUpUser(user);
+        if (result) {
+          Modular.to.navigate('/home');
+          setState(() => controller.loading = false);
+        } else {
+          alertDialog(context, AlertType.error, 'ATENÇÃO',
+              'Usuário já existe!\n Tente novamente.');
+        }
+      } else {
+        final info = result[0];
+        final title = result[1];
+        final description = result[2];
+        alertDialog(context, info, title, description);
+      }
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:crud_flutter/app/modules/home/view/edit_profile_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../store/home_store.dart';
 
@@ -12,5 +13,6 @@ class HomeModule extends Module {
  @override
  final List<ModularRoute> routes = [
    ChildRoute('/', child: (_, args) => const HomePage()),
+   ChildRoute('/edit', child: (_, args) => const EditProfilePage()),
  ];
 }

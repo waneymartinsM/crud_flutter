@@ -1,6 +1,7 @@
 import 'package:crud_flutter/app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class InputCustomized extends StatelessWidget {
   final TextEditingController? controller;
@@ -54,20 +55,12 @@ class InputCustomized extends StatelessWidget {
       inputFormatters: inputFormatters,
       onChanged: onChanged,
       keyboardType: keyboardType,
-      style: const TextStyle(
-        fontSize: 20,
-        color: darkPurple
-      ),
+      style: GoogleFonts.syne(fontSize: 20, color: darkPurple),
       textAlign: TextAlign.start,
       decoration: InputDecoration(
         prefixIcon: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-          ),
-          child: Icon(
-            icon,
-            color: const Color(0xffAC85C4),
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Icon(icon, color: const Color(0xffAC85C4)),
         ),
         suffixIcon: suffixIcon,
         contentPadding: suffixIcon == null

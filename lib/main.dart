@@ -10,8 +10,8 @@ void main() async {
   await Firebase.initializeApp();
   runApp(
     ModularApp(
-        module: AppModule(),
-        child: const AppWidget()
+      module: AppModule(),
+      child: const AppWidget(),
     ),
   );
 }

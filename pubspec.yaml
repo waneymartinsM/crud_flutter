@@ -33,14 +33,14 @@ dependencies:
   brasil_fields: ^1.4.5
 
   #Bibliotecas para o Firebase
-  firebase_core: ^2.1.1
-  cloud_firestore: ^4.0.4
-  firebase_storage: ^11.0.4
-  firebase_auth: ^4.1.1
-  firebase_auth_web: ^5.1.1
+  firebase_core: ^2.14.0
+  cloud_firestore: ^4.8.1
+  firebase_storage: ^11.2.3
+  firebase_auth: ^4.6.3
+  firebase_auth_web: ^5.5.3
 
   #Biblioteca para alerta em widget
-  rflutter_alert: ^2.0.4
+  rflutter_alert: ^2.0.7
 
   #Biblioteca para validar email
   email_validator: ^2.1.17
@@ -58,15 +58,24 @@ dependencies:
   #Biblioteca para ícones
   font_awesome_flutter: ^10.2.1
 
+  google_fonts: ^4.0.4
+  validatorless: ^1.2.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   mobx_codegen: ^2.0.7+3
-  build_runner: ^2.1.11
+  build_runner: ^2.4.5
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/
+
+
+  fonts:
+    - family: Syne
+      fonts:
+        - asset: assets/fonts/Syne.ttf

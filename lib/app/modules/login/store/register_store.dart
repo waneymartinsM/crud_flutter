@@ -20,16 +20,25 @@ abstract class _RegisterStore with Store {
   final FirebaseStorage storage = FirebaseStorage.instance;
 
   @observable
-  bool viewPassword = true;
+  bool passwordHide = true;
 
-  @action
-  void boolViewPassword() => viewPassword = !viewPassword;
+  @observable
+  bool loading = false;
 
   @observable
   UserModel userModel = UserModel();
 
   @observable
   File? file;
+
+  @observable
+  String genreValue = "";
+
+  @observable
+  String maritalStsValue = "";
+
+  @action
+  void viewPassword() => passwordHide = !passwordHide;
 
   ///Pegar a imagem(câmera/galeria):
   @action
@@ -56,7 +65,7 @@ abstract class _RegisterStore with Store {
     return File(croppedImage!.path);
   }
 
-  ///Fazer upload da imagem:
+ @action
   Future upload(String path, String email) async {
     File file = File(path);
     try {
@@ -69,33 +78,16 @@ abstract class _RegisterStore with Store {
     }
   }
 
-  ///Validar campos:
   List validateFields(UserModel model) {
-    if (model.name.isEmpty) {
-      return [AlertType.info, "Atenção", "Insira o seu nome!"];
-    } else if (model.email.isEmpty) {
-      return [AlertType.info, "Atenção", "Insira o seu e-mail!"];
-    } else if (EmailValidator.validate(model.email) == false) {
-      return [AlertType.info, "Atenção", "E-mail é inválido!"];
-    } else if (CPFValidator.isValid(model.cpf) == false) {
-      return [AlertType.info, "Atenção", "CPF inválido!"];
-    } else if (model.phone.isEmpty) {
-      return [AlertType.info, "Atenção", "Insira seu telefone"];
-    } else if (model.phone.length < 13) {
-      return [AlertType.info, "Atenção", "Número de telefone inválido!"];
-    } else if (model.maritalStatus.isEmpty) {
-      return [AlertType.info, "Atenção", "Selecione seu estado civil!"];
+    if (model.maritalStatus.isEmpty) {
+      return [AlertType.info, "Atenção", "Selecione seu Estado Civil."];
     } else if (model.genre.isEmpty) {
-      return [AlertType.info, "Atenção", "Selecione seu gênero sexual!"];
-    } else if (model.password.isEmpty) {
-      return [AlertType.info, "Atenção", "Insira sua senha!"];
-    } else if (model.password.length < 7) {
-      return [AlertType.info, "Atenção", "Sua senha tem menos de 7 caracteres"];
+      return [AlertType.info, "Atenção", "Selecione seu Gênero."];
     }
     return [true];
   }
 
-  ///Cadastrar usuário:
+  @action
   Future<bool> signUpUser(UserModel model) async {
     final repository = LoginRepository();
     final user = await repository.createAccount(model);

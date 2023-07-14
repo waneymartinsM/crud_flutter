@@ -1,10 +1,18 @@
+import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/modules/login/store/login_store.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
+import 'package:crud_flutter/app/widgets/alert.dart';
+import 'package:crud_flutter/app/widgets/custom_animated_button.dart';
+import 'package:crud_flutter/app/widgets/custom_text_field.dart';
+import 'package:crud_flutter/app/widgets/custom_text_field_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:validatorless/validatorless.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({
@@ -16,16 +24,23 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final LoginStore controller = Modular.get();
+  final controller = Modular.get<LoginStore>();
+  final _formKey = GlobalKey<FormState>();
   final firebaseAuth = FirebaseAuth.instance;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    Size size = MediaQuery.of(context).size;
+    return Observer(
+      builder: (_) => SingleChildScrollView(
         child: SizedBox(
           height: size.height,
           width: double.infinity,
@@ -51,141 +66,116 @@ class _SignInPageState extends State<SignInPage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'assets/images/login.svg',
-                    height: size.height * 0.30,
-                  ),
-                  const SizedBox(height: 15),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25.0,
-                      vertical: 12.0,
-                    ),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: lightPurple,
-                        prefixIcon: const Icon(
-                          Icons.email_outlined,
-                          color: purple,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25),
-                          borderSide: BorderSide.none,
-                        ),
-                        hintText: "E-mail",
-                      ),
-                      cursorColor: purple,
-                      controller: emailController,
-                      onChanged: controller.setEmail,
-                    ),
-                  ),
-                  Observer(
-                    builder: (_) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0,
-                        vertical: 12.0,
-                      ),
-                      child: TextFormField(
-                        obscureText: controller.passwordHide,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        cursorColor: purple,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: lightPurple,
-                          prefixIcon: const Icon(
-                            Icons.lock_outlined,
-                            color: purple,
-                          ),
-                          suffixIcon: IconButton(
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            onPressed: () {
-                              if (controller.passwordHide == true) {
-                                setState(() {
-                                  controller.passwordHide = false;
-                                });
-                              } else {
-                                setState(() {
-                                  controller.passwordHide = true;
-                                });
-                              }
-                            },
-                            icon: Icon(
-                              controller.passwordHide == true
-                                  ? Icons.remove_red_eye
-                                  : Icons.visibility_off,
-                              color: purple,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: "Senha",
-                        ),
-                        controller: passwordController,
-                        onChanged: controller.setPassword,
-                      ),
-                    ),
-                  ),
+                  SvgPicture.asset('assets/images/login.svg',
+                      height: size.height * 0.30),
+                  const SizedBox(height: 20),
+                  _buildForm(),
                   SizedBox(height: size.height * 0.04),
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 10,
-                    ),
-                    width: size.width * 0.6,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(29),
-                      child: TextButton(
-                        onPressed: () {
-                          controller
-                              .signInWithEmailAndPassword(context);
-                        },
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 20,
-                            horizontal: 40,
-                          ),
-                          backgroundColor: purple,
-                        ),
-                        child: const Text('ENTRAR'),
-                      ),
-                    ),
-                  ),
+                  _buildButtonSignIn(),
                   SizedBox(height: size.height * 0.03),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Não tem uma conta? ',
-                        style: TextStyle(
-                          color: purple,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Modular.to.pushNamed('/login/register');
-                        },
-                        child: const Text(
-                          "Registre-se",
-                          style: TextStyle(
-                            color: purple,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  _buildTextSignUp(),
                 ],
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildForm() {
+    return Form(
+      key: _formKey,
+      autovalidateMode: AutovalidateMode.disabled,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            CustomTextField(
+              hintText: 'E-mail',
+              icon: const Icon(Icons.alternate_email_rounded, color: grey),
+              textInputType: TextInputType.emailAddress,
+              controller: emailController,
+              onChange: controller.setEmail,
+              validator: Validatorless.multiple([
+                Validatorless.required('Preencha o campo com o seu e-mail.'),
+                Validatorless.email('E-mail inválido.'),
+              ]),
+            ),
+            const SizedBox(height: 20),
+            CustomTextFieldPassword(
+              hintText: 'Senha',
+              icon: const Icon(Icons.lock_outline_rounded),
+              onTapPassword: () {
+                controller.viewPassword();
+              },
+              visualizar: controller.passwordHide,
+              password: true,
+              obscureText: controller.passwordHide,
+              textInputType: TextInputType.visiblePassword,
+              controller: passwordController,
+              validator: Validatorless.multiple([
+                Validatorless.required('Preencha o campo com a sua senha'),
+                Validatorless.min(6, 'A senha deve ter no mínimo 6 caracteres'),
+                Validatorless.max(
+                    20, 'A senha deve ter no máximo 20 caracteres'),
+              ]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtonSignIn() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 45),
+      child: CustomAnimatedButton(
+        onTap: () async {
+          final isValid = _formKey.currentState?.validate() ?? false;
+          final user = UserModel(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
+          if (isValid) {
+            bool result = await controller.signInWithEmailAndPassword(user);
+            if (result) {
+              Modular.to.navigate('/home');
+              setState(() => controller.loading = false);
+            } else {
+              alertDialog(context, AlertType.error, 'ATENÇÃO',
+                  'Ocorreu um erro ao entrar na conta!\n Tente novamente mais tarde.');
+            }
+          }
+        },
+        widhtMultiply: 1,
+        height: 45,
+        colorText: white,
+        color: purple,
+        text: "ENTRAR",
+      ),
+    );
+  }
+
+  Widget _buildTextSignUp() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Não tem uma conta? ',
+          style: GoogleFonts.syne(color: darkPurple),
+        ),
+        GestureDetector(
+          onTap: () {
+            Modular.to.pushNamed('/login/register');
+          },
+          child: Text(
+            "Registre-se",
+            style: GoogleFonts.syne(
+                color: darkPurple, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:crud_flutter/app/model/user.dart';
+import 'package:crud_flutter/app/widgets/alert.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -86,5 +89,16 @@ abstract class HomeStoreBase with Store {
       ];
     }
     return [true];
+  }
+
+  Future<bool> deleteAccount() async {
+    bool success = await _repository.deleteAccount();
+    if (success) {
+      Modular.to.navigate('/login');
+    } else {
+      alertDialog(context, AlertType.error, "ATENÇÃO",
+          'Ocorreu um erro ao deletar conta, tente novamente mais tarde!');
+    }
+    return success;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:crud_flutter/app/widgets/select_photo.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SelectPhotoOptions extends StatelessWidget {
@@ -31,9 +32,7 @@ class SelectPhotoOptions extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           Column(
             children: [
               SelectPhoto(
@@ -41,17 +40,12 @@ class SelectPhotoOptions extends StatelessWidget {
                 icon: Icons.image_outlined,
                 textLabel: 'Escolher na galeria',
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Center(
+              const SizedBox(height: 10),
+              Center(
                 child: Text(
                   'OU',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: purple,
-                    fontWeight: FontWeight.bold
-                  ),
+                  style: GoogleFonts.syne(
+                      fontSize: 16, color: purple, fontWeight: FontWeight.w700),
                 ),
               ),
               const SizedBox(
