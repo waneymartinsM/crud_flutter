@@ -1,3 +1,6 @@
+<div align="center">
+    <img src="https://miro.medium.com/v2/resize:fit:754/1*c26LAwpdlPmK3x1lrlGwNA.png" alt="Logo">
+</div>
 
 # 👤 CRUD Flutter
 
