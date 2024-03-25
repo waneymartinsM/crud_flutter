@@ -20,7 +20,7 @@ O CRUD Flutter oferece as seguintes funcionalidades:
 - Atualizar Dados: Os usuários podem atualizar as informações do seu perfil, incluindo foto, nome, e-mail e telefone.
 - Excluir Usuário: Os usuários têm a opção de excluir permanentemente o seu perfil do aplicativo.
 
-# 📌 Recursos
+# Demonstração
 
 <p>
 <img src="screenshots/Screenshot_01.png" width="30%">
