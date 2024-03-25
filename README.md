@@ -45,7 +45,7 @@ Install Dependencies: flutter pub get
 Run the Project: flutter run
 ```
 
-## 🤝 Contribuições
+# 🤝 Contribuições
 Contribuições são sempre bem-vindas! Se você deseja contribuir para este projeto, siga estas etapas:
 
 Faça um fork do projeto.
@@ -53,3 +53,6 @@ Crie uma nova branch com a sua feature: git checkout -b feature/nova-feature
 Realize as alterações necessárias e faça commit das mudanças: git commit -m 'Adicione uma nova feature'
 Faça push para a branch: git push origin feature/nova-feature
 Abra um pull request para revisão.
+
+# ❓ Dúvidas e Sugestões
+Se você tiver alguma dúvida ou sugestão sobre o CRUD Flutter, sinta-se à vontade para abrir uma issue. Estamos sempre abertos a feedbacks e melhorias!
