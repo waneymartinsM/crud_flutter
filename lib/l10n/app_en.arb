@@ -1,6 +1,15 @@
 {
   "login": "Login",
   "notHaveAccountRegister": "Don\\'t have an account? ",
-  "register": "Register"
+  "register": "Register",
+
+  "email": "Email",
+  "fillFieldWithYourEmail": "Fill the field with your email.",
+  "invalidEmail": "Invalid email.",
+
+  "password": "Password",
+  "fillFieldYourPassword": "Fill the field with your password",
+  "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long",
+  "passwordMustBeAtLeast20CharactersLong": "Password must be a maximum of 20 characters"
 
 }

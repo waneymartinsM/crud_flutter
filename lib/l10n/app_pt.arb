@@ -1,5 +1,15 @@
 {
   "login": "Login",
   "notHaveAccountRegister": "Não tem uma conta? ",
-  "register": "Registre-se"
+  "register": "Registre-se",
+
+  "email": "E-mail",
+  "fillFieldWithYourEmail": "Preencha o campo com o seu e-mail.",
+  "invalidEmail": "E-mail inválido.",
+
+  "password": "Senha",
+  "fillFieldYourPassword": "Preencha o campo com a sua senha",
+  "passwordMustBeAtLeast6CharactersLong": "A senha deve ter no mínimo 6 caracteres",
+  "passwordMustBeAtLeast20CharactersLong": "A senha deve ter no máximo 20 caracteres"
+
 }

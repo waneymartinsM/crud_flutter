@@ -13,11 +13,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:validatorless/validatorless.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({
-    Key? key,
-  }) : super(key: key);
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -47,39 +46,50 @@ class _SignInPageState extends State<SignInPage> {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Positioned(
-                top: 0,
-                left: 0,
-                width: size.width * 0.3,
-                child: Image.asset(
-                  'assets/images/main_top.png',
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                width: size.width * 0.2,
-                child: Image.asset(
-                  'assets/images/main_bottom.png',
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset('assets/images/login.svg',
-                      height: size.height * 0.30),
-                  const SizedBox(height: 20),
-                  _buildForm(),
-                  SizedBox(height: size.height * 0.04),
-                  _buildButtonSignIn(),
-                  SizedBox(height: size.height * 0.03),
-                  _buildTextSignUp(),
-                ],
-              ),
+              imageTop(size),
+              imageBottom(size),
+              centerContent(size),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Positioned imageTop(Size size) {
+    return Positioned(
+      top: 0,
+      left: 0,
+      width: size.width * 0.3,
+      child: Image.asset(
+        'assets/images/main_top.png',
+      ),
+    );
+  }
+
+  Positioned imageBottom(Size size) {
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      width: size.width * 0.2,
+      child: Image.asset(
+        'assets/images/main_bottom.png',
+      ),
+    );
+  }
+
+  Column centerContent(Size size) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset('assets/images/login.svg', height: size.height * 0.30),
+        const SizedBox(height: 20),
+        _buildForm(),
+        SizedBox(height: size.height * 0.04),
+        _buildButtonSignIn(),
+        SizedBox(height: size.height * 0.03),
+        _buildTextSignUp(),
+      ],
     );
   }
 
@@ -92,19 +102,20 @@ class _SignInPageState extends State<SignInPage> {
         child: Column(
           children: [
             CustomTextField(
-              hintText: 'E-mail',
+              hintText: AppLocalizations.of(context)!.email,
               icon: const Icon(Icons.alternate_email_rounded, color: grey),
               textInputType: TextInputType.emailAddress,
               controller: emailController,
               onChange: controller.setEmail,
               validator: Validatorless.multiple([
-                Validatorless.required('Preencha o campo com o seu e-mail.'),
-                Validatorless.email('E-mail inválido.'),
+                Validatorless.required(
+                    AppLocalizations.of(context)!.fillFieldWithYourEmail),
+                Validatorless.email(AppLocalizations.of(context)!.invalidEmail),
               ]),
             ),
             const SizedBox(height: 20),
             CustomTextFieldPassword(
-              hintText: 'Senha',
+              hintText: AppLocalizations.of(context)!.password,
               icon: const Icon(Icons.lock_outline_rounded),
               onTapPassword: () {
                 controller.viewPassword();
@@ -115,10 +126,17 @@ class _SignInPageState extends State<SignInPage> {
               textInputType: TextInputType.visiblePassword,
               controller: passwordController,
               validator: Validatorless.multiple([
-                Validatorless.required('Preencha o campo com a sua senha'),
-                Validatorless.min(6, 'A senha deve ter no mínimo 6 caracteres'),
+                Validatorless.required(
+                    AppLocalizations.of(context)!.fillFieldYourPassword),
+                Validatorless.min(
+                    6,
+                    AppLocalizations.of(context)!
+                        .passwordMustBeAtLeast6CharactersLong),
                 Validatorless.max(
-                    20, 'A senha deve ter no máximo 20 caracteres'),
+                  20,
+                  AppLocalizations.of(context)!
+                      .passwordMustBeAtLeast20CharactersLong,
+                ),
               ]),
             ),
           ],
@@ -143,6 +161,7 @@ class _SignInPageState extends State<SignInPage> {
               Modular.to.navigate('/home');
               setState(() => controller.loading = false);
             } else {
+              // ignore: use_build_context_synchronously
               alertDialog(context, AlertType.error, 'ATENÇÃO',
                   'Ocorreu um erro ao entrar na conta!\n Tente novamente mais tarde.');
             }

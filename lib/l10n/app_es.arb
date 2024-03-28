@@ -1,5 +1,14 @@
 {
   "login": "Acesso",
   "notHaveAccountRegister": "¿No tienes una cuenta? ",
-  "register": "Registro"
+  "register": "Registro",
+
+  "email": "Correo electrónico",
+  "fillFieldWithYourEmail": "Rellene el campo con su correo electrónico.",
+  "invalidEmail": "Correo electrónico no válido.",
+
+  "password": "Contraseña",
+  "fillFieldYourPassword": "Rellena el campo con tu contraseña",
+  "passwordMustBeAtLeast6CharactersLong": "La contraseña debe tener al menos 6 caracteres",
+  "passwordMustBeAtLeast20CharactersLong": "La contraseña debe tener un máximo de 20 caracteres"
 }

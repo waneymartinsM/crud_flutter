@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
           children: [
             imageTop(size),
             imageBottom(size),
-            contentInTheCenter(size, context),
+            centerContent(size, context),
           ],
         ),
       ),
@@ -55,7 +55,7 @@ class LoginPage extends StatelessWidget {
         height: size.height * 0.50);
   }
 
-  Widget contentInTheCenter(Size size, BuildContext context) {
+  Widget centerContent(Size size, BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
