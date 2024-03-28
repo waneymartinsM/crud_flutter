@@ -10,6 +10,11 @@
   "password": "Senha",
   "fillFieldYourPassword": "Preencha o campo com a sua senha",
   "passwordMustBeAtLeast6CharactersLong": "A senha deve ter no mínimo 6 caracteres",
-  "passwordMustBeAtLeast20CharactersLong": "A senha deve ter no máximo 20 caracteres"
+  "passwordMustBeAtLeast20CharactersLong": "A senha deve ter no máximo 20 caracteres",
+
+  "attention": "Atenção",
+  "errorOccurredLoggingAccount": "Ocorreu um erro ao entrar na conta!\n Tente novamente mais tarde.",
+
+  "enter": "Entrar"
 
 }

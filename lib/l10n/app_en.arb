@@ -10,6 +10,10 @@
   "password": "Password",
   "fillFieldYourPassword": "Fill the field with your password",
   "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long",
-  "passwordMustBeAtLeast20CharactersLong": "Password must be a maximum of 20 characters"
+  "passwordMustBeAtLeast20CharactersLong": "Password must be a maximum of 20 characters",
 
+  "attention": "Attention",
+  "errorOccurredLoggingAccount": "An error occurred while logging into your account!\nPlease try again later.",
+
+  "enter": "To enter"
 }

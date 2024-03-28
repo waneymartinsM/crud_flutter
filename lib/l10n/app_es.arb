@@ -10,5 +10,10 @@
   "password": "Contraseña",
   "fillFieldYourPassword": "Rellena el campo con tu contraseña",
   "passwordMustBeAtLeast6CharactersLong": "La contraseña debe tener al menos 6 caracteres",
-  "passwordMustBeAtLeast20CharactersLong": "La contraseña debe tener un máximo de 20 caracteres"
+  "passwordMustBeAtLeast20CharactersLong": "La contraseña debe tener un máximo de 20 caracteres",
+
+  "attention": "Atención",
+  "errorOccurredLoggingAccount": "¡Se produjo un error al iniciar sesión en su cuenta!\nInténtelo de nuevo más tarde.",
+
+  "enter": "Iniciar sesión"
 }

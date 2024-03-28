@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/modules/login/store/login_store.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
@@ -161,9 +162,11 @@ class _SignInPageState extends State<SignInPage> {
               Modular.to.navigate('/home');
               setState(() => controller.loading = false);
             } else {
-              // ignore: use_build_context_synchronously
-              alertDialog(context, AlertType.error, 'ATENÇÃO',
-                  'Ocorreu um erro ao entrar na conta!\n Tente novamente mais tarde.');
+              alertDialog(
+                  context,
+                  AlertType.error,
+                  AppLocalizations.of(context)!.attention.toUpperCase(),
+                  AppLocalizations.of(context)!.errorOccurredLoggingAccount);
             }
           }
         },
@@ -171,7 +174,7 @@ class _SignInPageState extends State<SignInPage> {
         height: 45,
         colorText: white,
         color: purple,
-        text: "ENTRAR",
+        text: AppLocalizations.of(context)!.enter,
       ),
     );
   }
@@ -181,7 +184,7 @@ class _SignInPageState extends State<SignInPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Não tem uma conta? ',
+          AppLocalizations.of(context)!.notHaveAccountRegister,
           style: GoogleFonts.syne(color: darkPurple),
         ),
         GestureDetector(
@@ -189,7 +192,7 @@ class _SignInPageState extends State<SignInPage> {
             Modular.to.pushNamed('/login/register');
           },
           child: Text(
-            "Registre-se",
+            AppLocalizations.of(context)!.register,
             style: GoogleFonts.syne(
                 color: darkPurple, fontWeight: FontWeight.bold),
           ),
