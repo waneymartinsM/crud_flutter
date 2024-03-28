@@ -1,33 +1,12 @@
 import 'package:crud_flutter/app/utils/colors.dart';
-import 'package:crud_flutter/locales.dart';
+import 'package:crud_flutter/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class AppWidget extends StatefulWidget {
-  const AppWidget({Key? key}) : super(key: key);
-
-  @override
-  State<AppWidget> createState() => _AppWidgetState();
-}
-
-class _AppWidgetState extends State<AppWidget> {
-  final FlutterLocalization localization = FlutterLocalization.instance;
-
-  @override
-  void initState() {
-    configureLocalization();
-    super.initState();
-  }
-
-  void configureLocalization() {
-    localization.init(mapLocales: LOCALES, initLanguageCode: "pt");
-    localization.onTranslatedLanguage = onTranslatedLanguage;
-  }
-
-  void onTranslatedLanguage(Locale? locale) {
-    setState(() {});
-  }
+class AppWidget extends StatelessWidget {
+  const AppWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +14,14 @@ class _AppWidgetState extends State<AppWidget> {
       theme: ThemeData(primaryColor: purple, scaffoldBackgroundColor: white),
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,
-      supportedLocales: localization.supportedLocales,
-      localizationsDelegates: localization.localizationsDelegates,
+      supportedLocales: L10n.all,
+      locale: const Locale('pt'),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       debugShowCheckedModeBanner: false,
     );
   }

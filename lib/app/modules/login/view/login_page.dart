@@ -1,27 +1,13 @@
 import 'package:crud_flutter/app/utils/colors.dart';
 import 'package:crud_flutter/app/widgets/custom_animated_button.dart';
-import 'package:crud_flutter/locales.dart';
-import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  late FlutterLocalization _flutterLocalization;
-
-  @override
-  void initState() {
-    super.initState();
-    _flutterLocalization = FlutterLocalization.instance;
-  }
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 45,
                     colorText: white,
                     color: purple,
-                    text: LocaleData.login.getString(context).toUpperCase(),
+                    text: AppLocalizations.of(context)!.login.toUpperCase(),
                   ),
                 ),
                 SizedBox(height: size.height * 0.03),
@@ -77,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      LocaleData.NotHaveAccountRegister.getString(context),
+                      AppLocalizations.of(context)!.notHaveAccountRegister,
                       style:
                           GoogleFonts.syne(color: darkPurple.withOpacity(0.7)),
                     ),
@@ -86,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                         Modular.to.pushNamed('/login/register');
                       },
                       child: Text(
-                        LocaleData.register.getString(context),
+                        AppLocalizations.of(context)!.register,
                         style: GoogleFonts.syne(
                             color: darkPurple, fontWeight: FontWeight.bold),
                       ),
@@ -101,50 +87,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-//Adicionar dropdown:
-// variavel:   late String _currentLocale;
-//
-// no initState:
-// @override
-//   void initState() {
-//     super.initState();
-//     _currentLocale = _flutterLocalization.currentLocale!.languageCode;
-//   }
-
-//      DropdownButton(
-//             value: _currentLocale,
-//             items: const [
-//               DropdownMenuItem(
-//                 value: "en",
-//                 child: Text("English"),
-//               ),
-//               DropdownMenuItem(
-//                 value: "de",
-//                 child: Text("German"),
-//               ),
-//               DropdownMenuItem(
-//                 value: "zh",
-//                 child: Text("Chinese"),
-//               ),
-//             ],
-//             onChanged: (value) {
-//               _setLocale(value);
-//             },
-//           ),
-
-// void _setLocale(String? value) {
-//     if (value == null) return;
-//     if (value == "en") {
-//       _flutterLocalization.translate("en");
-//     } else if (value == "de") {
-//       _flutterLocalization.translate("de");
-//     } else if (value == "zh") {
-//       _flutterLocalization.translate("zh");
-//     } else {
-//       return;
-//     }
-//     setState(() {
-//       _currentLocale = value;
-//     });
-//   }
