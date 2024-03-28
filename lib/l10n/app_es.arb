@@ -2,6 +2,7 @@
   "login": "Acesso",
   "notHaveAccountRegister": "¿No tienes una cuenta? ",
   "register": "Registro",
+  "createAnAccount": "Registrarse",
 
   "email": "Correo electrónico",
   "fillFieldWithYourEmail": "Rellene el campo con su correo electrónico.",
@@ -14,6 +15,33 @@
 
   "attention": "Atención",
   "errorOccurredLoggingAccount": "¡Se produjo un error al iniciar sesión en su cuenta!\nInténtelo de nuevo más tarde.",
+  "userAlreadyExists": "¡El usuario ya existe!\nNo vuelvas a intentarlo.",
 
-  "enter": "Iniciar sesión"
+  "enter": "Iniciar sesión",
+
+  "addProfilePhoto": "Agregar una foto de perfil",
+  "name": "nombre",
+  "fillFieldYourName": "Rellena el campo con tu nombre.",
+  "nameMustHaveLeast3Characters": "El nombre debe tener al menos 3 caracteres.",
+  "nameMustHaveMaximum30Characters": "El nombre debe tener un máximo de 30 caracteres",
+
+  "cpf": "CPF",
+  "fillFieldWithYourCpf": "Rellene el campo con su CPF.",
+  "invalidCpf": "CPF no válido.",
+  "cpfMustHave11Digits": "El CPF debe tener 11 dígitos.",
+
+  "cellPhone": "Celular",
+  "fillFieldWithYourPhoneNumber": "Rellene el campo con su número de teléfono.",
+  "phoneMustHave14Digits": "El teléfono debe tener 14 dígitos.",
+
+  "selectYourMaritalStatus": "Seleccione su estado civil",
+  "married":  "Casado",
+  "single": "Soltero",
+  "divorced": "Divorciado",
+  "widower": "Viudo",
+
+  "selectYourGenre": "Selecciona tu género",
+  "male": "Masculino",
+  "feminine": "Femenino",
+  "other": "Otro(s)"
 }

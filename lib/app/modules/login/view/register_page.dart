@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:crud_flutter/app/modules/login/store/register_store.dart';
 import 'package:crud_flutter/app/widgets/custom_animated_button.dart';
 import 'package:crud_flutter/app/widgets/custom_text_field.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:validatorless/validatorless.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -90,9 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: white,
       elevation: 0,
       leading: IconButton(
-        onPressed: () {
-          Modular.to.pushNamed('/login');
-        },
+        onPressed: () => Modular.to.pushNamed('/login'),
         icon: const Icon(Icons.arrow_back, color: darkPurple),
       ),
     );
@@ -112,9 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   radius: 60,
                   backgroundImage: FileImage(controller.file!),
                 )),
-      onTap: () {
-        selectPhotoOptions();
-      },
+      onTap: () => selectPhotoOptions(),
     );
   }
 
@@ -124,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Adicione uma foto de perfil",
+            AppLocalizations.of(context)!.addProfilePhoto,
             style: GoogleFonts.syne(
               color: darkPurple,
               fontWeight: FontWeight.w700,
@@ -148,31 +146,36 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           children: [
             CustomTextField(
-              hintText: 'Nome',
+              hintText: AppLocalizations.of(context)!.name,
               icon: const Icon(Icons.person_outline_rounded, color: grey),
               textInputType: TextInputType.text,
               controller: name,
               validator: Validatorless.multiple([
-                Validatorless.required('Preencha o campo com o seu nome.'),
-                Validatorless.min(3, 'O nome deve ter no mínimo 3 caracteres.'),
+                Validatorless.required(
+                    AppLocalizations.of(context)!.fillFieldYourName),
+                Validatorless.min(3,
+                    AppLocalizations.of(context)!.nameMustHaveLeast3Characters),
                 Validatorless.max(
-                    30, 'O nome deve ter no máximo 30 caracteres'),
+                    30,
+                    AppLocalizations.of(context)!
+                        .nameMustHaveMaximum30Characters),
               ]),
             ),
             const SizedBox(height: 20),
             CustomTextField(
-              hintText: 'E-mail',
+              hintText: AppLocalizations.of(context)!.email,
               icon: const Icon(Icons.alternate_email_rounded, color: grey),
               textInputType: TextInputType.emailAddress,
               controller: email,
               validator: Validatorless.multiple([
-                Validatorless.required('Preencha o campo com o seu e-mail.'),
-                Validatorless.email('E-mail inválido.'),
+                Validatorless.required(
+                    AppLocalizations.of(context)!.fillFieldWithYourEmail),
+                Validatorless.email(AppLocalizations.of(context)!.invalidEmail),
               ]),
             ),
             const SizedBox(height: 20),
             CustomTextField(
-              hintText: 'CPF',
+              hintText: AppLocalizations.of(context)!.cpf,
               icon: const Icon(Icons.person, color: grey),
               textInputType: TextInputType.number,
               controller: cpf,
@@ -181,14 +184,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 CpfInputFormatter(),
               ],
               validator: Validatorless.multiple([
-                Validatorless.required('Preencha o campo com o seu CPF.'),
-                Validatorless.cpf('CPF inválido.'),
-                Validatorless.min(11, 'O CPF deve ter 11 dígitos.')
+                Validatorless.required(
+                    AppLocalizations.of(context)!.fillFieldWithYourCpf),
+                Validatorless.cpf(AppLocalizations.of(context)!.invalidCpf),
+                Validatorless.min(
+                    11, AppLocalizations.of(context)!.cpfMustHaveElevenDigits)
               ]),
             ),
             const SizedBox(height: 20),
             CustomTextField(
-              hintText: 'Celular',
+              hintText: AppLocalizations.of(context)!.cellPhone,
               icon: const Icon(Icons.phone, color: grey),
               textInputType: TextInputType.phone,
               controller: phone,
@@ -197,8 +202,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 TelefoneInputFormatter(),
               ],
               validator: Validatorless.multiple([
-                Validatorless.required('Preencha o campo com o seu Telefone.'),
-                Validatorless.min(14, 'O telefone deve ter 14 dígitos')
+                Validatorless.required(
+                    AppLocalizations.of(context)!.fillFieldWithYourPhoneNumber),
+                Validatorless.min(
+                    14, AppLocalizations.of(context)!.phoneMustHave14Digits)
               ]),
             ),
             const SizedBox(height: 20),
@@ -207,7 +214,7 @@ class _RegisterPageState extends State<RegisterPage> {
             _buildGender(),
             const SizedBox(height: 20),
             CustomTextFieldPassword(
-              hintText: 'Senha',
+              hintText: AppLocalizations.of(context)!.password,
               icon: const Icon(Icons.lock_outline_rounded, color: grey),
               onTapPassword: () {
                 controller.viewPassword();
@@ -218,10 +225,16 @@ class _RegisterPageState extends State<RegisterPage> {
               textInputType: TextInputType.visiblePassword,
               controller: password,
               validator: Validatorless.multiple([
-                Validatorless.required('Preencha o campo com a sua senha'),
-                Validatorless.min(6, 'A senha deve ter no mínimo 6 caracteres'),
+                Validatorless.required(
+                    AppLocalizations.of(context)!.fillFieldYourPassword),
+                Validatorless.min(
+                    6,
+                    AppLocalizations.of(context)!
+                        .passwordMustBeAtLeast6CharactersLong),
                 Validatorless.max(
-                    20, 'A senha deve ter no máximo 20 caracteres'),
+                    20,
+                    AppLocalizations.of(context)!
+                        .passwordMustBeAtLeast20CharactersLong),
               ]),
             ),
             const SizedBox(height: 20),
@@ -243,7 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Selecione seu Estado Civil",
+            AppLocalizations.of(context)!.selectYourMaritalStatus,
             style: GoogleFonts.syne(
               fontWeight: FontWeight.w700,
               fontSize: 14,
@@ -252,7 +265,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           ListTile(
             title: Text(
-              "Casado(a)",
+              AppLocalizations.of(context)!.married,
               style: GoogleFonts.syne(
                   fontWeight: FontWeight.w500, fontSize: 15, color: black),
             ),
@@ -270,7 +283,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           ListTile(
             title: Text(
-              "Solteiro(a)",
+              AppLocalizations.of(context)!.single,
               style: GoogleFonts.syne(
                   fontWeight: FontWeight.w500, fontSize: 15, color: black),
             ),
@@ -287,7 +300,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           ListTile(
             title: Text(
-              "Divorciado(a)",
+              AppLocalizations.of(context)!.divorced,
               style: GoogleFonts.syne(
                   fontWeight: FontWeight.w500, fontSize: 15, color: black),
             ),
@@ -304,7 +317,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           ListTile(
             title: Text(
-              "Viúvo(a)",
+              AppLocalizations.of(context)!.widower,
               style: GoogleFonts.syne(
                   fontWeight: FontWeight.w500, fontSize: 15, color: black),
             ),
@@ -334,7 +347,7 @@ class _RegisterPageState extends State<RegisterPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Selecione seu Gênero",
+            AppLocalizations.of(context)!.selectYourGenre,
             style: GoogleFonts.syne(
               fontWeight: FontWeight.w700,
               fontSize: 14,
@@ -343,7 +356,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           ListTile(
             title: Text(
-              "Masculino",
+              AppLocalizations.of(context)!.male,
               style: GoogleFonts.syne(
                   fontWeight: FontWeight.w500, fontSize: 15, color: black),
             ),
@@ -360,7 +373,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           ListTile(
             title: Text(
-              "Feminino",
+              AppLocalizations.of(context)!.feminine,
               style: GoogleFonts.syne(
                   fontWeight: FontWeight.w500, fontSize: 15, color: black),
             ),
@@ -377,7 +390,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           ListTile(
             title: Text(
-              "Outro(s)",
+              AppLocalizations.of(context)!.other,
               style: GoogleFonts.syne(
                   fontWeight: FontWeight.w500, fontSize: 15, color: black),
             ),
@@ -408,7 +421,7 @@ class _RegisterPageState extends State<RegisterPage> {
         height: 45,
         colorText: white,
         color: purple,
-        text: "REGISTRAR",
+        text: AppLocalizations.of(context)!.createAnAccount,
       ),
     );
   }
@@ -439,8 +452,11 @@ class _RegisterPageState extends State<RegisterPage> {
           Modular.to.navigate('/home');
           setState(() => controller.loading = false);
         } else {
-          alertDialog(context, AlertType.error, 'ATENÇÃO',
-              'Usuário já existe!\n Tente novamente.');
+          alertDialog(
+              context,
+              AlertType.error,
+              AppLocalizations.of(context)!.attention,
+              AppLocalizations.of(context)!.userAlreadyExists);
         }
       } else {
         final info = result[0];

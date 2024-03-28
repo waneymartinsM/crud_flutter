@@ -2,6 +2,7 @@
   "login": "Login",
   "notHaveAccountRegister": "Don\\'t have an account? ",
   "register": "Register",
+  "createAnAccount": "Register",
 
   "email": "Email",
   "fillFieldWithYourEmail": "Fill the field with your email.",
@@ -14,6 +15,33 @@
 
   "attention": "Attention",
   "errorOccurredLoggingAccount": "An error occurred while logging into your account!\nPlease try again later.",
+  "userAlreadyExists": "User already exists!\nDo not try again.",
 
-  "enter": "To enter"
+  "enter": "To enter",
+
+  "addProfilePhoto": "Add a profile photo",
+  "name": "Name",
+  "fillFieldYourName": "Fill the field with your name.",
+  "nameMustHaveLeast3Characters": "The name must have at least 3 characters.",
+  "nameMustHaveMaximum30Characters": "The name must have a maximum of 30 characters",
+
+  "cpf": "CPF",
+  "fillFieldWithYourCpf": "Fill the field with your CPF.",
+  "invalidCpf": "Invalid CPF.",
+  "cpfMustHaveElevenDigits": "The CPF must have 11 digits.",
+
+  "cellPhone": "Cellphone",
+  "fillFieldWithYourPhoneNumber": "Fill the field with your Phone Number.",
+  "phoneMustHave14Digits": "Phone must have 14 digits.",
+
+  "selectYourMaritalStatus": "Select your Marital Status",
+  "married":  "Married",
+  "single": "Single",
+  "divorced": "Divorced",
+  "widower": "Widower",
+
+  "selectYourGenre": "Select your Gender",
+  "male": "Male",
+  "feminine": "Feminine",
+  "other": "Other(s)"
 }
