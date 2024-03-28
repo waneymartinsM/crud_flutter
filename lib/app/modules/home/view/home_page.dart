@@ -75,6 +75,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDrawer() {
+    var syne = GoogleFonts.syne(fontSize: 16);
     return Drawer(
       child: ListView(
         children: [
@@ -83,16 +84,15 @@ class _HomePageState extends State<HomePage> {
               child: Container()),
           ListTile(
             leading: const Icon(Icons.edit_outlined),
-            title: Text(AppLocalizations.of(context)!.editProfile,
-                style: GoogleFonts.syne(fontSize: 16)),
+            title: Text(AppLocalizations.of(context)!.editProfile, style: syne),
             onTap: () {
               Modular.to.navigate('/home/edit');
             },
           ),
           ListTile(
             leading: const Icon(Icons.person_remove_alt_1_rounded),
-            title: Text(AppLocalizations.of(context)!.deleteAccount,
-                style: GoogleFonts.syne(fontSize: 16)),
+            title:
+                Text(AppLocalizations.of(context)!.deleteAccount, style: syne),
             onTap: () {
               showDialog(
                 context: context,
@@ -103,9 +103,13 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.language),
+            title: Text(AppLocalizations.of(context)!.language, style: syne),
+            onTap: () {},
+          ),
+          ListTile(
             leading: const Icon(Icons.logout),
-            title: Text(AppLocalizations.of(context)!.toGoOut,
-                style: GoogleFonts.syne(fontSize: 16)),
+            title: Text(AppLocalizations.of(context)!.toGoOut, style: syne),
             onTap: () {
               FirebaseAuth.instance.signOut();
               Modular.to.navigate('/login');

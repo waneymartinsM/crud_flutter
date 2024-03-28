@@ -51,6 +51,7 @@
   "toGoOut": "Salir",
   "youWantDeleteYourAccount": "¿Estás seguro de que deseas eliminar tu cuenta?",
   "delete": "Eliminar",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "language": "Idioma"
 
 }
