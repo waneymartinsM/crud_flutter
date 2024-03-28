@@ -43,5 +43,14 @@
   "selectYourGenre": "Select your Gender",
   "male": "Male",
   "feminine": "Feminine",
-  "other": "Other(s)"
+  "other": "Other(s)",
+
+  "myProfile": "My Profile",
+  "editProfile": "Edit Profile",
+  "deleteAccount": "Delete Account",
+  "toGoOut": "To Go Out",
+  "youWantDeleteYourAccount": "Are you sure you want to delete your account?",
+  "delete": "Delete",
+  "cancel": "Cancel"
+
 }

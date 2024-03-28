@@ -1,6 +1,5 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:crud_flutter/app/modules/home/repository/home_repository.dart';
 import 'package:crud_flutter/app/modules/home/store/home_store.dart';
 import 'package:crud_flutter/app/widgets/custom_animated_button.dart';
 import 'package:crud_flutter/app/widgets/input_customized.dart';
@@ -11,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: purple,
             elevation: 0,
             title: Text(
-              'MEU PERFIL',
+              AppLocalizations.of(context)!.myProfile.toUpperCase(),
               style: GoogleFonts.syne(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -83,14 +83,16 @@ class _HomePageState extends State<HomePage> {
               child: Container()),
           ListTile(
             leading: const Icon(Icons.edit_outlined),
-            title: Text('Editar perfil', style: GoogleFonts.syne(fontSize: 16)),
+            title: Text(AppLocalizations.of(context)!.editProfile,
+                style: GoogleFonts.syne(fontSize: 16)),
             onTap: () {
               Modular.to.navigate('/home/edit');
             },
           ),
           ListTile(
             leading: const Icon(Icons.person_remove_alt_1_rounded),
-            title: Text('Excluir conta', style: GoogleFonts.syne(fontSize: 16)),
+            title: Text(AppLocalizations.of(context)!.deleteAccount,
+                style: GoogleFonts.syne(fontSize: 16)),
             onTap: () {
               showDialog(
                 context: context,
@@ -102,7 +104,8 @@ class _HomePageState extends State<HomePage> {
           ),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: Text('Sair', style: GoogleFonts.syne(fontSize: 16)),
+            title: Text(AppLocalizations.of(context)!.toGoOut,
+                style: GoogleFonts.syne(fontSize: 16)),
             onTap: () {
               FirebaseAuth.instance.signOut();
               Modular.to.navigate('/login');
@@ -142,14 +145,14 @@ class _HomePageState extends State<HomePage> {
   Widget _buildDeleteAccount() {
     return AlertDialog(
       title: Center(
-          child: Text('ATENÇÃO',
+          child: Text(AppLocalizations.of(context)!.attention,
               style: GoogleFonts.syne(fontWeight: FontWeight.bold))),
       content: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: 180,
         child: Column(
           children: [
-            Text("Tem certeza que deseja excluir sua conta?",
+            Text(AppLocalizations.of(context)!.youWantDeleteYourAccount,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.syne(fontSize: 16)),
             const Spacer(),
@@ -161,7 +164,7 @@ class _HomePageState extends State<HomePage> {
               height: 45,
               colorText: white,
               color: purple,
-              text: "EXCLUIR",
+              text: AppLocalizations.of(context)!.delete.toUpperCase(),
             ),
             const SizedBox(height: 10),
             CustomAnimatedButton(
@@ -172,7 +175,7 @@ class _HomePageState extends State<HomePage> {
               height: 45,
               colorText: black,
               color: grey.withOpacity(0.2),
-              text: "CANCELAR",
+              text: AppLocalizations.of(context)!.cancel.toUpperCase(),
             ),
           ],
         ),
@@ -201,14 +204,7 @@ class _HomePageState extends State<HomePage> {
                     ? "https://img.myloview.com.br/posters/user-icon-human-person-symbol-avatar-login-sign-700-258992648.jpg"
                     : controller.userModel.userImage,
                 fit: BoxFit.cover,
-                errorWidget: (
-                  context,
-                  url,
-                  error,
-                ) =>
-                    const Icon(
-                  Icons.error,
-                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
           ),
@@ -237,9 +233,7 @@ class _HomePageState extends State<HomePage> {
           icon: Icons.person,
           readOnly: true,
           hintText: controller.userModel.name,
-          hintStyle: const TextStyle(
-            color: darkPurple,
-          ),
+          hintStyle: const TextStyle(color: darkPurple),
           keyboardType: TextInputType.text,
           controller: nameController,
         ),
@@ -248,9 +242,7 @@ class _HomePageState extends State<HomePage> {
           icon: Icons.email_outlined,
           readOnly: true,
           hintText: controller.userModel.email,
-          hintStyle: const TextStyle(
-            color: darkPurple,
-          ),
+          hintStyle: const TextStyle(color: darkPurple),
           keyboardType: TextInputType.emailAddress,
           controller: emailController,
         ),
@@ -259,9 +251,7 @@ class _HomePageState extends State<HomePage> {
           icon: Icons.phone,
           readOnly: true,
           hintText: controller.userModel.phone,
-          hintStyle: const TextStyle(
-            color: darkPurple,
-          ),
+          hintStyle: const TextStyle(color: darkPurple),
           keyboardType: TextInputType.phone,
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
