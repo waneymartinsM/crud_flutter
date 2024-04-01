@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
           ListTile(
             leading: const Icon(Icons.language),
             title: Text(AppLocalizations.of(context)!.language, style: syne),
-            onTap: () => Modular.to.navigate('/home/language'),
+            onTap: () => Modular.to.pushNamed('/home/language'),
           ),
           ListTile(
             leading: const Icon(Icons.logout),
