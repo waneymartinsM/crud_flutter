@@ -122,12 +122,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBody() {
     return SafeArea(
-      child: Observer(
-        builder: (_) => controller.loading
-            ? const Center(
-                child: Center(child: CircularProgressIndicator(color: purple)))
-            : _buildUserData(),
-      ),
+      child: controller.loading
+          ? const Center(
+              child: Center(child: CircularProgressIndicator(color: purple)))
+          : _buildUserData(),
     );
   }
 

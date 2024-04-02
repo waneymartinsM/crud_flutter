@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageSelectPage extends StatefulWidget {
   const LanguageSelectPage({super.key});
@@ -20,7 +21,17 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
   @override
   void initState() {
     super.initState();
-    _selectedLanguage = WidgetsBinding.instance.window.locale;
+    // _selectedLanguage = WidgetsBinding.instance.window.locale;
+    _loadSavedLanguage();
+  }
+
+  void _loadSavedLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String languageCode = prefs.getString('selectedLanguageCode') ?? 'pt';
+    setState(() {
+      _selectedLanguage = Locale(languageCode);
+      print("Idioma salvo carregado: $_selectedLanguage");
+    });
   }
 
   @override
@@ -60,15 +71,23 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
                   child: Text(value.languageCode),
                 );
               }).toList(),
+              value: _selectedLanguage,
               onChanged: (Locale? locale) {
                 setState(() {
                   _selectedLanguage = locale;
+                  print("Novo idioma selecionado no OnChanged: $_selectedLanguage");
                 });
               },
             ),
             const SizedBox(height: 40),
             CustomAnimatedButton(
-              onTap: () async {},
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setString(
+                    'selectedLanguageCode', _selectedLanguage!.languageCode);
+                print("Novo idioma selecionado salvo: ${_selectedLanguage!.languageCode}");
+                Modular.to.pushNamed('/home/');
+              },
               widhtMultiply: 0.7,
               height: 45,
               colorText: white,
