@@ -66,6 +66,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+dependency_overrides:
+  watcher: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
