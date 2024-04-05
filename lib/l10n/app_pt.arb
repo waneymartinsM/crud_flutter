@@ -14,8 +14,9 @@
   "passwordMustBeAtLeast20CharactersLong": "A senha deve ter no máximo 20 caracteres",
 
   "attention": "Atenção",
-  "errorOccurredLoggingAccount": "Ocorreu um erro ao entrar na conta!\n Tente novamente mais tarde.",
-  "userAlreadyExists": "Usuário já existe!\n Tente novamente.",
+  "errorOccurredLoggingAccount": "Ocorreu um erro ao entrar na conta!\nTente novamente mais tarde.",
+  "errorOccurredUpdatingProfile": "Ocorreu um erro ao atualizar perfil!\nTente novamente mais tarde.",
+  "userAlreadyExists": "Usuário já existe!\nTente novamente.",
 
   "enter": "Entrar",
 
@@ -53,6 +54,7 @@
   "delete": "Excluir",
   "cancel": "Cancelar",
   "save": "Salvar",
+  "saveEditions": "Salvar alterações",
 
   "language": "Idioma",
   "selectPreferredLanguage": "Selecione abaixo o idioma de sua preferência:"

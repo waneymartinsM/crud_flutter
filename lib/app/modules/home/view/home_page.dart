@@ -170,9 +170,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 10),
             CustomAnimatedButton(
-              onTap: () {
-                Modular.to.pop();
-              },
+              onTap: () => Modular.to.pop(),
               widhtMultiply: 1,
               height: 45,
               colorText: black,

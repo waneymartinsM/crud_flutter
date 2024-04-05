@@ -1,3 +1,4 @@
+// ignore_for_file: library_private_types_in_public_api
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crud_flutter/app/model/user.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -43,9 +45,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(25),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
       builder: (_) => DraggableScrollableSheet(
           initialChildSize: 0.28,
@@ -55,9 +55,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           builder: (_, scrollController) {
             return SingleChildScrollView(
               controller: scrollController,
-              child: SelectPhotoOptions(
-                onTap: controller.pickImage,
-              ),
+              child: SelectPhotoOptions(onTap: controller.pickImage),
             );
           }),
     );
@@ -76,7 +74,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         backgroundColor: purple,
         centerTitle: true,
         title: Text(
-          'EDITAR PERFIL',
+          AppLocalizations.of(context)!.editProfile.toUpperCase(),
           style: GoogleFonts.syne(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
@@ -129,11 +127,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 ? "https://img.myloview.com.br/posters/user-icon-human-person-symbol-avatar-login-sign-700-258992648.jpg"
                                 : controller.userModel.userImage,
                             fit: BoxFit.cover,
-                            errorWidget: (
-                              context,
-                              url,
-                              error,
-                            ) =>
+                            errorWidget: (context, url, error) =>
                                 const Icon(Icons.error))
                         : Image.file(
                             controller.file!,
@@ -159,7 +153,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         const SizedBox(height: 15),
         InputCustomized(
           icon: Icons.person,
-          hintText: 'Nome',
+          hintText: AppLocalizations.of(context)!.name,
           hintStyle: GoogleFonts.syne(color: darkPurple),
           keyboardType: TextInputType.text,
           controller: nameController,
@@ -167,7 +161,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         const SizedBox(height: 15),
         InputCustomized(
           icon: Icons.email_outlined,
-          hintText: 'E-mail',
+          hintText: AppLocalizations.of(context)!.email,
           hintStyle: GoogleFonts.syne(color: darkPurple),
           keyboardType: TextInputType.emailAddress,
           controller: emailController,
@@ -175,7 +169,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         const SizedBox(height: 15),
         InputCustomized(
           icon: Icons.phone,
-          hintText: 'Telefone',
+          hintText: AppLocalizations.of(context)!.cellPhone,
           hintStyle: GoogleFonts.syne(color: darkPurple),
           keyboardType: TextInputType.phone,
           inputFormatters: [
@@ -202,7 +196,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             height: 45,
             colorText: white,
             color: purple,
-            text: "SALVAR ALTERAÇÕES",
+            text: AppLocalizations.of(context)!.saveEditions.toUpperCase(),
           ),
         ),
         const SizedBox(height: 15),
@@ -216,7 +210,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             height: 45,
             colorText: black,
             color: Colors.grey.withOpacity(0.2),
-            text: "CANCELAR",
+            text: AppLocalizations.of(context)!.cancel.toUpperCase(),
           ),
         ),
       ],
@@ -241,8 +235,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
       await _repository.updateUserData(user).then((value) {
         Modular.to.navigate('/home');
       }).catchError((_) {
-        alertDialog(context, AlertType.error, 'Erro',
-            'Ocorreu um erro ao atualizar perfil. Tente novamente mais tarde.');
+        alertDialog(
+            context,
+            AlertType.error,
+            AppLocalizations.of(context)!.attention,
+            AppLocalizations.of(context)!.errorOccurredUpdatingProfile);
       });
       setState(() => controller.loading = false);
     } else {

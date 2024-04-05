@@ -15,6 +15,7 @@
 
   "attention": "Atención",
   "errorOccurredLoggingAccount": "¡Se produjo un error al iniciar sesión en su cuenta!\nInténtelo de nuevo más tarde.",
+  "errorOccurredUpdatingProfile": "¡Ocurrió un error al actualizar el perfil!\nVuelve a intentarlo más tarde.",
   "userAlreadyExists": "¡El usuario ya existe!\nNo vuelvas a intentarlo.",
 
   "enter": "Iniciar sesión",
@@ -53,6 +54,7 @@
   "delete": "Eliminar",
   "cancel": "Cancelar",
   "save": "Guardar",
+  "saveEditions": "Guardar ediciones",
 
   "language": "Idioma",
   "selectPreferredLanguage": "Seleccione su idioma preferido a continuación:"

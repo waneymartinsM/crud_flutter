@@ -15,6 +15,7 @@
 
   "attention": "Attention",
   "errorOccurredLoggingAccount": "An error occurred while logging into your account!\nPlease try again later.",
+  "errorOccurredUpdatingProfile": "An error occurred while updating profile!\nTry again later.",
   "userAlreadyExists": "User already exists!\nDo not try again.",
 
   "enter": "To enter",
@@ -53,6 +54,7 @@
   "delete": "Delete",
   "cancel": "Cancel",
   "save": "Save",
+  "saveEditions": "Save editions",
 
   "language": "Language",
   "selectPreferredLanguage": "Select your preferred language below:"
