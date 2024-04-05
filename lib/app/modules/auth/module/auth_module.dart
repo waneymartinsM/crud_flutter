@@ -4,12 +4,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthModule extends Module {
   @override
-  final List<Bind> binds = [
-    Bind.lazySingleton((i) => AuthStore()),
-  ];
+  final List<Bind> binds = [Bind.lazySingleton((i) => AuthStore())];
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/', child: (_, args) => const AuthPage()),
+    ChildRoute('/', child: (_, args) => const AuthPage())
   ];
 }

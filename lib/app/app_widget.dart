@@ -45,7 +45,9 @@ class _AppWidgetState extends State<AppWidget> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? languageCode = prefs.getString('selectedLanguage');
     if (languageCode != null) {
-      setState(() {});
+      setState(() {
+
+      });
       return Locale(languageCode);
     } else {
       return WidgetsBinding.instance.window.locale;

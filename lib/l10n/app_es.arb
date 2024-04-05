@@ -52,6 +52,9 @@
   "youWantDeleteYourAccount": "¿Estás seguro de que deseas eliminar tu cuenta?",
   "delete": "Eliminar",
   "cancel": "Cancelar",
-  "language": "Idioma"
+  "save": "Guardar",
+
+  "language": "Idioma",
+  "selectPreferredLanguage": "Seleccione su idioma preferido a continuación:"
 
 }

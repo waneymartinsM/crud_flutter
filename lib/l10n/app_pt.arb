@@ -52,6 +52,9 @@
   "youWantDeleteYourAccount": "Tem certeza que deseja excluir sua conta?",
   "delete": "Excluir",
   "cancel": "Cancelar",
-  "language": "Idioma"
+  "save": "Salvar",
+
+  "language": "Idioma",
+  "selectPreferredLanguage": "Selecione abaixo o idioma de sua preferência:"
 
 }

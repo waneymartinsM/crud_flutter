@@ -7,11 +7,11 @@ part 'auth_store.g.dart';
 class AuthStore = AuthStoreBase with _$AuthStore;
 
 abstract class AuthStoreBase with Store {
-  final AuthSevice _authSevice = AuthSevice();
+  final AuthService _authService = AuthService();
 
   ///Verificar usuário logado:
   verifyLoggedUser() {
-    final loggedUser = _authSevice.checkCurrentUser();
+    final loggedUser = _authService.checkCurrentUser();
     if (loggedUser) {
       Modular.to.navigate('/home');
     } else {

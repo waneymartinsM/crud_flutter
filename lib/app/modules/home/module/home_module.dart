@@ -14,8 +14,7 @@ class HomeModule extends Module {
     ChildRoute('/', child: (_, args) => const HomePage()),
     ChildRoute('/edit', child: (_, args) => const EditProfilePage()),
     ChildRoute('/language',
-        child: (_, args) => const LanguageSelectPage(
-              selectedLocale: Locale('pt'),
-            )),
+        child: (_, args) =>
+            const LanguageSelectPage(selectedLocale: Locale('pt'))),
   ];
 }

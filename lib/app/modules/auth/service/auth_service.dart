@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 ///Verificar o usuário atual:
-class AuthSevice {
+class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool checkCurrentUser() {
