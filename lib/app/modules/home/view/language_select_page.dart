@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageSelectPage extends StatefulWidget {
@@ -77,9 +78,30 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
             const SizedBox(height: 20),
             DropdownButton<Locale>(
               items: L10n.all.map<DropdownMenuItem<Locale>>((Locale value) {
+                IconData iconData;
+                switch (value.languageCode) {
+                  case 'en':
+                    iconData = Icons.flag_outlined;
+                    break;
+                  case 'pt':
+                    iconData = Icons.g_mobiledata;
+                    break;
+                  default:
+                    iconData = Icons.opacity;
+                }
+
                 return DropdownMenuItem<Locale>(
                   value: value,
-                  child: Text(value.languageCode.toUpperCase()),
+                  child: Row(
+                    children: [
+                      Icon(iconData),
+                      SizedBox(width: 8),
+                      Text(
+                        value.languageCode.toUpperCase(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 );
               }).toList(),
               value: _selectedLanguage,
