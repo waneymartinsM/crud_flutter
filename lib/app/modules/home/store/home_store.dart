@@ -12,7 +12,9 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../repository/home_repository.dart';
+import 'dart:ui';
 
 part 'home_store.g.dart';
 
@@ -36,6 +38,9 @@ abstract class HomeStoreBase with Store {
 
   @observable
   File? file;
+
+  @observable
+  Locale? selectedLanguage;
 
   @action
   Future pickImage(ImageSource source) async {
@@ -100,5 +105,19 @@ abstract class HomeStoreBase with Store {
           'Ocorreu um erro ao deletar conta, tente novamente mais tarde!');
     }
     return success;
+  }
+
+  @action
+  Future<void> updateSelectedLanguage(Locale newLocale) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedLanguageCode', newLocale.languageCode);
+    selectedLanguage = newLocale;
+  }
+
+  @action
+  Future<void> loadSelectedLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String languageCode = prefs.getString('selectedLanguageCode') ?? 'pt';
+    selectedLanguage = Locale(languageCode);
   }
 }

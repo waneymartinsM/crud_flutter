@@ -72,6 +72,22 @@ mixin _$HomeStore on HomeStoreBase, Store {
     });
   }
 
+  late final _$selectedLanguageAtom =
+      Atom(name: 'HomeStoreBase.selectedLanguage', context: context);
+
+  @override
+  Locale? get selectedLanguage {
+    _$selectedLanguageAtom.reportRead();
+    return super.selectedLanguage;
+  }
+
+  @override
+  set selectedLanguage(Locale? value) {
+    _$selectedLanguageAtom.reportWrite(value, super.selectedLanguage, () {
+      super.selectedLanguage = value;
+    });
+  }
+
   late final _$pickImageAsyncAction =
       AsyncAction('HomeStoreBase.pickImage', context: context);
 
@@ -95,6 +111,24 @@ mixin _$HomeStore on HomeStoreBase, Store {
   @override
   Future recoverUserData() {
     return _$recoverUserDataAsyncAction.run(() => super.recoverUserData());
+  }
+
+  late final _$updateSelectedLanguageAsyncAction =
+      AsyncAction('HomeStoreBase.updateSelectedLanguage', context: context);
+
+  @override
+  Future<void> updateSelectedLanguage(Locale newLocale) {
+    return _$updateSelectedLanguageAsyncAction
+        .run(() => super.updateSelectedLanguage(newLocale));
+  }
+
+  late final _$loadSelectedLanguageAsyncAction =
+      AsyncAction('HomeStoreBase.loadSelectedLanguage', context: context);
+
+  @override
+  Future<void> loadSelectedLanguage() {
+    return _$loadSelectedLanguageAsyncAction
+        .run(() => super.loadSelectedLanguage());
   }
 
   late final _$HomeStoreBaseActionController =
@@ -128,7 +162,8 @@ mixin _$HomeStore on HomeStoreBase, Store {
 readOnly: ${readOnly},
 loading: ${loading},
 userModel: ${userModel},
-file: ${file}
+file: ${file},
+selectedLanguage: ${selectedLanguage}
     ''';
   }
 }

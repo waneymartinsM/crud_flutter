@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:crud_flutter/app/modules/home/view/edit_profile_page.dart';
 import 'package:crud_flutter/app/modules/home/view/language_select_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -12,6 +13,9 @@ class HomeModule extends Module {
   final List<ModularRoute> routes = [
     ChildRoute('/', child: (_, args) => const HomePage()),
     ChildRoute('/edit', child: (_, args) => const EditProfilePage()),
-    ChildRoute('/language', child: (_, args) => const LanguageSelectPage()),
+    ChildRoute('/language',
+        child: (_, args) => const LanguageSelectPage(
+              selectedLocale: Locale('pt'),
+            )),
   ];
 }
