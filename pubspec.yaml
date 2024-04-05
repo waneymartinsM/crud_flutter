@@ -62,7 +62,7 @@ dependencies:
   validatorless: ^1.2.3
   intl: ^0.18.1
   shared_preferences: ^2.2.2
-  multi_dropdown: ^2.0.0
+  dropdown_button2: ^2.3.9
 
   flutter_localizations:
     sdk: flutter
