@@ -13,6 +13,7 @@ O CRUD Flutter é um aplicativo simples de gerenciamento de perfil de usuário, 
 - **Modular**: Biblioteca para organização e injeção de dependências no Flutter.
 - **MobX**: Biblioteca de gerenciamento de estado reativo para aplicativos Flutter.
 - **Firebase**: Plataforma de desenvolvimento de aplicativos móveis do Google, utilizada para autenticação de usuários (Firebase Auth) e armazenamento de dados (Firebase Storage).
+- **Internacionalização**: O aplicativo suporta múltiplos idiomas, incluindo português, inglês e espanhol. Os usuários podem selecionar o idioma desejado em todo o aplicativo.
 
 # 📌 Recursos
 O CRUD Flutter oferece as seguintes funcionalidades:
@@ -22,6 +23,7 @@ O CRUD Flutter oferece as seguintes funcionalidades:
 - Visualizar Perfil: Os usuários podem visualizar todas as informações do seu perfil armazenadas no aplicativo.
 - Atualizar Dados: Os usuários podem atualizar as informações do seu perfil, incluindo foto, nome, e-mail e telefone.
 - Excluir Usuário: Os usuários têm a opção de excluir permanentemente o seu perfil do aplicativo.
+- Opção de Idioma: Os usuários podem escolher o idioma desejado em todo o aplicativo, com suporte para português, inglês e espanhol.
 
 # Demonstração
 
@@ -35,6 +37,10 @@ O CRUD Flutter oferece as seguintes funcionalidades:
 <img src="screenshots/Screenshot_04.png" width="30%">
 <img src="screenshots/Screenshot_05.png" width="30%">
 <img src="screenshots/Screenshot_06.png" width="30%">
+</p>
+
+<p>
+<img src="screenshots/Screenshot_07.png" width="30%">
 </p>
 
 # ℹ️ Como Utilizar
