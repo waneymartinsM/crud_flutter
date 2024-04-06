@@ -57,6 +57,7 @@
   "saveEditions": "Guardar ediciones",
 
   "language": "Idioma",
-  "selectPreferredLanguage": "Seleccione su idioma preferido a continuación:"
+  "selectPreferredLanguage": "Seleccione su idioma preferido a continuación:",
+  "selectTheLanguage": "Selecciona el idioma"
 
 }

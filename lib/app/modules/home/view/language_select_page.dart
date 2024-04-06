@@ -78,133 +78,57 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
               ),
             ),
             const SizedBox(height: 20),
-            // DropdownButton<Locale>(
-            //   items: L10n.all.map<DropdownMenuItem<Locale>>((Locale value) {
-            //     IconData iconData;
-            //     switch (value.languageCode) {
-            //       case 'en':
-            //         iconData = Icons.flag_outlined;
-            //         break;
-            //       case 'pt':
-            //         iconData = Icons.g_mobiledata;
-            //         break;
-            //       default:
-            //         iconData = Icons.opacity;
-            //     }
-            //
-            //     return DropdownMenuItem<Locale>(
-            //       value: value,
-            //       child: Row(
-            //         children: [
-            //           Icon(iconData),
-            //           SizedBox(width: 8),
-            //           Text(
-            //             value.languageCode.toUpperCase(),
-            //             style: TextStyle(fontSize: 16),
-            //           ),
-            //         ],
-            //       ),
-            //     );
-            //   }).toList(),
-            //   value: _selectedLanguage,
-            //   onChanged: (Locale? locale) {
-            //     if (locale != null) {
-            //       _updateLanguage(locale);
-            //     }
-            //   },
-            // ),
-
-            DropdownButtonHideUnderline(
-              child: DropdownButton2<Locale>(
-                isExpanded: true,
-                hint: Text(
-                  'Select Language',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).hintColor,
+            Container(
+              decoration: BoxDecoration(
+                  color: greyLight, borderRadius: BorderRadius.circular(8)),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2<Locale>(
+                  isExpanded: true,
+                  hint: Text( AppLocalizations.of(context)!.selectTheLanguage,
+                      style: GoogleFonts.syne(
+                          fontSize: 14, color: Theme.of(context).hintColor)),
+                  items: L10n.all.map((Locale value) {
+                    IconData iconData;
+                    switch (value.languageCode) {
+                      case 'en':
+                        iconData = Icons.flag_outlined;
+                        break;
+                      case 'pt':
+                        iconData = Icons.g_mobiledata;
+                        break;
+                      default:
+                        iconData = Icons.opacity;
+                    }
+                    return DropdownMenuItem<Locale>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          Icon(iconData),
+                          const SizedBox(width: 5),
+                          Text(
+                            value.languageCode.toUpperCase(),
+                            style: GoogleFonts.syne(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  value: _selectedLanguage,
+                  onChanged: (Locale? locale) {
+                    if (locale != null) {
+                      _updateLanguage(locale);
+                    }
+                  },
+                  dropdownStyleData: DropdownStyleData(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                    offset: const Offset(0, 8),
                   ),
                 ),
-                items: L10n.all.map((Locale value) {
-                  IconData iconData;
-                  switch (value.languageCode) {
-                    case 'en':
-                      iconData = Icons.flag_outlined;
-                      break;
-                    case 'pt':
-                      iconData = Icons.g_mobiledata;
-                      break;
-                    default:
-                      iconData = Icons.opacity;
-                  }
-                  return DropdownMenuItem<Locale>(
-                    value: value,
-                    child: Row(
-                      children: [
-                        Icon(iconData),
-                        SizedBox(width: 8),
-                        Text(
-                          value.languageCode.toUpperCase(),
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-                value: _selectedLanguage,
-                onChanged: (Locale? locale) {
-                  if (locale != null) {
-                    _updateLanguage(locale);
-                  }
-                },
-                // buttonStyle: ButtonStyle(
-                //   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                //     EdgeInsets.symmetric(horizontal: 16),
-                //   ),
-                //   height: MaterialStateProperty.all<double>(40),
-                //   width: MaterialStateProperty.all<double>(140),
-                // ),
-                // menuItemHeight: 40,
               ),
             ),
-
-            //TODO: REMOVER DROPDOWN
-            // DropdownButton<Locale>(
-            //   items: L10n.all.map<DropdownMenuItem<Locale>>((Locale value) {
-            //     IconData iconData;
-            //     switch (value.languageCode) {
-            //       case 'en':
-            //         iconData = Icons.flag_outlined;
-            //         break;
-            //       case 'pt':
-            //         iconData = Icons.g_mobiledata;
-            //         break;
-            //       default:
-            //         iconData = Icons.opacity;
-            //     }
-            //
-            //     return DropdownMenuItem<Locale>(
-            //       value: value,
-            //       child: Row(
-            //         children: [
-            //           Icon(iconData),
-            //           SizedBox(width: 8),
-            //           Text(
-            //             value.languageCode.toUpperCase(),
-            //             style: TextStyle(fontSize: 16),
-            //           ),
-            //         ],
-            //       ),
-            //     );
-            //   }).toList(),
-            //   value: _selectedLanguage,
-            //   onChanged: (Locale? locale) {
-            //     if (locale != null) {
-            //       _updateLanguage(locale);
-            //     }
-            //   },
-            // ),
-
-            const SizedBox(height: 40),
+            const SizedBox(height: 50),
             CustomAnimatedButton(
               onTap: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();

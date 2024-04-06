@@ -9,3 +9,4 @@ const white = Color(0xFFFFFFFF);
 const lightGrey = Color(0XFFF5F5F5);
 const jet = Color(0XFF3D3B39);
 const grey = Color(0xFFAAAAAA);
+const greyLight = Color(0XFFF1F1F1);

@@ -57,6 +57,6 @@
   "saveEditions": "Save editions",
 
   "language": "Language",
-  "selectPreferredLanguage": "Select your preferred language below:"
-
+  "selectPreferredLanguage": "Select your preferred language below:",
+  "selectTheLanguage": "Select the language"
 }
