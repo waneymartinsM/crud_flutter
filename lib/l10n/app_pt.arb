@@ -58,5 +58,8 @@
 
   "language": "Idioma",
   "selectPreferredLanguage": "Selecione abaixo o idioma de sua preferência:",
-  "selectTheLanguage": "Selecione o idioma"
+  "selectTheLanguage": "Selecione o idioma",
+  "portuguese": "Português",
+  "english": "Inglês",
+  "spanish": "Espanhol"
 }
