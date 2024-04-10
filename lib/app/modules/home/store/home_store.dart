@@ -110,8 +110,12 @@ abstract class HomeStoreBase with Store {
   @action
   Future<void> updateSelectedLanguage(Locale newLocale) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedLanguageCode', newLocale.languageCode);
-    selectedLanguage = newLocale;
+    // await prefs.setString('selectedLanguageCode', newLocale.languageCode);
+    // selectedLanguage = newLocale;
+    String? selectedLanguageCode = prefs.getString('selectedLanguage');
+    if (selectedLanguageCode != null) {
+      selectedLanguage = Locale(selectedLanguageCode);
+    }
   }
 
   @action
@@ -119,5 +123,16 @@ abstract class HomeStoreBase with Store {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String languageCode = prefs.getString('selectedLanguageCode') ?? 'pt';
     selectedLanguage = Locale(languageCode);
+  }
+
+  @action
+  void updateLanguage(Locale newLanguage) {
+    selectedLanguage = newLanguage;
+  }
+
+
+  Future<void> saveSelectedLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedLanguage', selectedLanguage!.languageCode);
   }
 }

@@ -1,9 +1,11 @@
 // ignore_for_file: deprecated_member_use
+import 'package:crud_flutter/app/modules/home/store/home_store.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
 import 'package:crud_flutter/app/widgets/custom_animated_button.dart';
 import 'package:crud_flutter/l10n/l10n.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,30 +24,31 @@ class LanguageSelectPage extends StatefulWidget {
 }
 
 class _LanguageSelectPageState extends State<LanguageSelectPage> {
-  late Locale _selectedLanguage;
+  // late Locale _selectedLanguage;
+  final homeStore = Modular.get<HomeStore>();
 
   @override
   void initState() {
     super.initState();
-    _selectedLanguage = widget.selectedLocale;
-    _loadSelectedLanguage();
+    homeStore.selectedLanguage = widget.selectedLocale;
+    homeStore.loadSelectedLanguage();
   }
 
-  void _updateLanguage(Locale newLanguage) {
-    setState(() {
-      _selectedLanguage = newLanguage;
-    });
-  }
-
-  Future<void> _loadSelectedLanguage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? selectedLanguageCode = prefs.getString('selectedLanguage');
-    if (selectedLanguageCode != null) {
-      setState(() {
-        _selectedLanguage = Locale(selectedLanguageCode);
-      });
-    }
-  }
+  // void _updateLanguage(Locale newLanguage) {
+  //   setState(() {
+  //     _selectedLanguage = newLanguage;
+  //   });
+  // }
+  //
+  // Future<void> _loadSelectedLanguage() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? selectedLanguageCode = prefs.getString('selectedLanguage');
+  //   if (selectedLanguageCode != null) {
+  //     setState(() {
+  //       _selectedLanguage = Locale(selectedLanguageCode);
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -103,37 +106,39 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
     return Container(
       decoration: BoxDecoration(
           color: greyLight, borderRadius: BorderRadius.circular(8)),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton2<Locale>(
-          isExpanded: true,
-          hint: Text(AppLocalizations.of(context)!.selectTheLanguage,
-              style: textStyle),
-          items: L10n.all.map((Locale value) {
-            String image;
-            switch (value.languageCode) {
-              case 'en':
-                image = 'assets/images/estados-unidos.png';
-                break;
-              case 'pt':
-                image = 'assets/images/brasil.png';
-                break;
-              case 'es':
-                image = 'assets/images/espanha.png';
-                break;
-              default:
-                image = 'assets/images/brasil.png';
-            }
-            return dropdownMenuItem(value, image, textStyle);
-          }).toList(),
-          value: _selectedLanguage,
-          onChanged: (Locale? locale) {
-            if (locale != null) {
-              _updateLanguage(locale);
-            }
-          },
-          dropdownStyleData: dropdownStyleData(),
-        ),
-      ),
+      child: Observer(builder: (context) {
+        return DropdownButtonHideUnderline(
+          child: DropdownButton2<Locale>(
+            isExpanded: true,
+            hint: Text(AppLocalizations.of(context)!.selectTheLanguage,
+                style: textStyle),
+            items: L10n.all.map((Locale value) {
+              String image;
+              switch (value.languageCode) {
+                case 'en':
+                  image = 'assets/images/estados-unidos.png';
+                  break;
+                case 'pt':
+                  image = 'assets/images/brasil.png';
+                  break;
+                case 'es':
+                  image = 'assets/images/espanha.png';
+                  break;
+                default:
+                  image = 'assets/images/brasil.png';
+              }
+              return dropdownMenuItem(value, image, textStyle);
+            }).toList(),
+            value: homeStore.selectedLanguage,
+            onChanged: (Locale? locale) {
+              if (locale != null) {
+                homeStore.updateLanguage(locale);
+              }
+            },
+            dropdownStyleData: dropdownStyleData(),
+          ),
+        );
+      }),
     );
   }
 
@@ -162,9 +167,10 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
   CustomAnimatedButton _buildButtonSave(BuildContext context) {
     return CustomAnimatedButton(
       onTap: () async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString(
-            'selectedLanguage', _selectedLanguage.languageCode);
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        // await prefs.setString(
+        //     'selectedLanguage', _selectedLanguage.languageCode);
+        await homeStore.saveSelectedLanguage();
         Modular.to.pushNamed('/home/');
       },
       widhtMultiply: 0.7,

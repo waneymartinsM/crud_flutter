@@ -157,6 +157,17 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
+  void updateLanguage(Locale newLanguage) {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.updateLanguage');
+    try {
+      return super.updateLanguage(newLanguage);
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 readOnly: ${readOnly},
