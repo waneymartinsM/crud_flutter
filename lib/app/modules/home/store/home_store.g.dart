@@ -126,9 +126,18 @@ mixin _$HomeStore on HomeStoreBase, Store {
       AsyncAction('HomeStoreBase.loadSelectedLanguage', context: context);
 
   @override
-  Future<void> loadSelectedLanguage() {
+  Future<Locale?> loadSelectedLanguage() {
     return _$loadSelectedLanguageAsyncAction
         .run(() => super.loadSelectedLanguage());
+  }
+
+  late final _$saveSelectedLanguageAsyncAction =
+      AsyncAction('HomeStoreBase.saveSelectedLanguage', context: context);
+
+  @override
+  Future<void> saveSelectedLanguage() {
+    return _$saveSelectedLanguageAsyncAction
+        .run(() => super.saveSelectedLanguage());
   }
 
   late final _$HomeStoreBaseActionController =

@@ -2,10 +2,9 @@ import 'dart:io';
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/widgets/alert.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -110,19 +109,20 @@ abstract class HomeStoreBase with Store {
   @action
   Future<void> updateSelectedLanguage(Locale newLocale) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // await prefs.setString('selectedLanguageCode', newLocale.languageCode);
-    // selectedLanguage = newLocale;
-    String? selectedLanguageCode = prefs.getString('selectedLanguage');
-    if (selectedLanguageCode != null) {
-      selectedLanguage = Locale(selectedLanguageCode);
-    }
+    await prefs.setString('selectedLanguageCode', newLocale.languageCode);
+    selectedLanguage = newLocale;
   }
 
   @action
-  Future<void> loadSelectedLanguage() async {
+  Future<Locale?> loadSelectedLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String languageCode = prefs.getString('selectedLanguageCode') ?? 'pt';
-    selectedLanguage = Locale(languageCode);
+    String? languageCode = prefs.getString('selectedLanguageCode');
+    if (languageCode != null) {
+      selectedLanguage = Locale(languageCode);
+      return selectedLanguage;
+    } else {
+      return WidgetsBinding.instance.window.locale;
+    }
   }
 
   @action
@@ -130,9 +130,10 @@ abstract class HomeStoreBase with Store {
     selectedLanguage = newLanguage;
   }
 
-
+  @action
   Future<void> saveSelectedLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedLanguage', selectedLanguage!.languageCode);
+    await prefs.setString(
+        'selectedLanguageCode', selectedLanguage!.languageCode);
   }
 }

@@ -24,7 +24,6 @@ class LanguageSelectPage extends StatefulWidget {
 }
 
 class _LanguageSelectPageState extends State<LanguageSelectPage> {
-  // late Locale _selectedLanguage;
   final homeStore = Modular.get<HomeStore>();
 
   @override
@@ -33,22 +32,6 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
     homeStore.selectedLanguage = widget.selectedLocale;
     homeStore.loadSelectedLanguage();
   }
-
-  // void _updateLanguage(Locale newLanguage) {
-  //   setState(() {
-  //     _selectedLanguage = newLanguage;
-  //   });
-  // }
-  //
-  // Future<void> _loadSelectedLanguage() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? selectedLanguageCode = prefs.getString('selectedLanguage');
-  //   if (selectedLanguageCode != null) {
-  //     setState(() {
-  //       _selectedLanguage = Locale(selectedLanguageCode);
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -167,9 +150,6 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
   CustomAnimatedButton _buildButtonSave(BuildContext context) {
     return CustomAnimatedButton(
       onTap: () async {
-        // SharedPreferences prefs = await SharedPreferences.getInstance();
-        // await prefs.setString(
-        //     'selectedLanguage', _selectedLanguage.languageCode);
         await homeStore.saveSelectedLanguage();
         Modular.to.pushNamed('/home/');
       },

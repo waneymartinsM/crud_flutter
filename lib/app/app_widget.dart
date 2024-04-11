@@ -23,6 +23,7 @@ class _AppWidgetState extends State<AppWidget> {
         future: _loadSelectedLanguage(),
         builder: (context, snapshot) {
           Locale selectedLocale = snapshot.data ?? const Locale('pt');
+          print("selectedLocale: $selectedLocale");
           return MaterialApp.router(
             theme:
                 ThemeData(primaryColor: purple, scaffoldBackgroundColor: white),
@@ -43,11 +44,9 @@ class _AppWidgetState extends State<AppWidget> {
 
   Future<Locale> _loadSelectedLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? languageCode = prefs.getString('selectedLanguage');
+    String? languageCode = prefs.getString('selectedLanguageCode');
     if (languageCode != null) {
-      setState(() {
-
-      });
+      setState(() {});
       return Locale(languageCode);
     } else {
       return WidgetsBinding.instance.window.locale;
