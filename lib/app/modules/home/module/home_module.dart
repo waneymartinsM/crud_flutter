@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:crud_flutter/app/app_store.dart';
 import 'package:crud_flutter/app/modules/home/view/edit_profile_page.dart';
 import 'package:crud_flutter/app/modules/home/view/language_select_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -7,7 +8,9 @@ import '../view/home_page.dart';
 
 class HomeModule extends Module {
   @override
-  final List<Bind> binds = [Bind.lazySingleton((i) => HomeStore())];
+  final List<Bind> binds = [
+    Bind.lazySingleton((i) => HomeStore(i.get<AppStore>()))
+  ];
 
   @override
   final List<ModularRoute> routes = [

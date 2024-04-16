@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:crud_flutter/app/app_store.dart';
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/widgets/alert.dart';
 import 'package:email_validator/email_validator.dart';
@@ -19,6 +20,9 @@ part 'home_store.g.dart';
 class HomeStore = HomeStoreBase with _$HomeStore;
 
 abstract class HomeStoreBase with Store {
+  HomeStoreBase(this.appStore);
+
+  final AppStore appStore;
   final FirebaseStorage storage = FirebaseStorage.instance;
   final _repository = HomeRepository();
 
@@ -126,4 +130,5 @@ abstract class HomeStoreBase with Store {
     await prefs.setString(
         'selectedLanguageCode', selectedLanguage!.languageCode);
   }
+
 }

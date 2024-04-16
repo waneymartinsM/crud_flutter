@@ -1,3 +1,4 @@
+import 'package:crud_flutter/app/app_store.dart';
 import 'package:crud_flutter/app/modules/home/store/home_store.dart';
 import 'package:crud_flutter/l10n/l10n.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
@@ -16,6 +17,7 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
+  final store = Modular.get<AppStore>();
   final homeStore = Modular.get<HomeStore>();
 
   @override
@@ -35,10 +37,11 @@ class _AppWidgetState extends State<AppWidget> {
     return Observer(
       builder: (context) {
         return MaterialApp.router(
-          theme: ThemeData(
-            primaryColor: purple,
-            scaffoldBackgroundColor: white,
-          ),
+          // theme: ThemeData(
+          //   primaryColor: purple,
+          //   scaffoldBackgroundColor: white,
+          // ),
+          theme: store.themeType,
           routeInformationParser: Modular.routeInformationParser,
           routerDelegate: Modular.routerDelegate,
           supportedLocales: L10n.all,

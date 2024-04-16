@@ -59,7 +59,12 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: purple,
             elevation: 0,
             actions: [
-              Switch(value: false, onChanged: (bool value) {}),
+              Switch(
+                value: controller.appStore.isDark,
+                onChanged: (bool value) {
+                  controller.appStore.changeTheme();
+                },
+              ),
             ],
             title: Text(
               AppLocalizations.of(context)!.myProfile.toUpperCase(),
