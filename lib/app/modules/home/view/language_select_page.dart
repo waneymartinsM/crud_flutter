@@ -9,7 +9,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageSelectPage extends StatefulWidget {
   const LanguageSelectPage({
@@ -116,6 +115,7 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
             onChanged: (Locale? locale) {
               if (locale != null) {
                 homeStore.updateLanguage(locale);
+                print("locale: $locale");
               }
             },
             dropdownStyleData: dropdownStyleData(),
@@ -151,7 +151,8 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
     return CustomAnimatedButton(
       onTap: () async {
         await homeStore.saveSelectedLanguage();
-        Modular.to.pushNamed('/home/');
+        setState(() {});
+        Modular.to.popAndPushNamed('/home/');
       },
       widhtMultiply: 0.7,
       height: 45,

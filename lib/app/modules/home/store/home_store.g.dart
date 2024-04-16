@@ -113,24 +113,6 @@ mixin _$HomeStore on HomeStoreBase, Store {
     return _$recoverUserDataAsyncAction.run(() => super.recoverUserData());
   }
 
-  late final _$updateSelectedLanguageAsyncAction =
-      AsyncAction('HomeStoreBase.updateSelectedLanguage', context: context);
-
-  @override
-  Future<void> updateSelectedLanguage(Locale newLocale) {
-    return _$updateSelectedLanguageAsyncAction
-        .run(() => super.updateSelectedLanguage(newLocale));
-  }
-
-  late final _$loadSelectedLanguageAsyncAction =
-      AsyncAction('HomeStoreBase.loadSelectedLanguage', context: context);
-
-  @override
-  Future<Locale?> loadSelectedLanguage() {
-    return _$loadSelectedLanguageAsyncAction
-        .run(() => super.loadSelectedLanguage());
-  }
-
   late final _$saveSelectedLanguageAsyncAction =
       AsyncAction('HomeStoreBase.saveSelectedLanguage', context: context);
 

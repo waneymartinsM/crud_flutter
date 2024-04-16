@@ -13,7 +13,6 @@ import 'package:mobx/mobx.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../repository/home_repository.dart';
-import 'dart:ui';
 
 part 'home_store.g.dart';
 
@@ -106,22 +105,13 @@ abstract class HomeStoreBase with Store {
     return success;
   }
 
-  @action
-  Future<void> updateSelectedLanguage(Locale newLocale) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedLanguageCode', newLocale.languageCode);
-    selectedLanguage = newLocale;
-  }
-
-  @action
-  Future<Locale?> loadSelectedLanguage() async {
+  Future<void> loadSelectedLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? languageCode = prefs.getString('selectedLanguageCode');
     if (languageCode != null) {
       selectedLanguage = Locale(languageCode);
-      return selectedLanguage;
     } else {
-      return WidgetsBinding.instance.window.locale;
+      selectedLanguage = WidgetsBinding.instance.window.locale;
     }
   }
 

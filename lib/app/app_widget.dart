@@ -4,6 +4,7 @@ import 'package:crud_flutter/app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,38 +19,37 @@ class _AppWidgetState extends State<AppWidget> {
   final homeStore = Modular.get<HomeStore>();
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Locale>(
-        future: _loadSelectedLanguage(),
-        builder: (context, snapshot) {
-          Locale selectedLocale = snapshot.data ?? const Locale('pt');
-          print("selectedLocale: $selectedLocale");
-          return MaterialApp.router(
-            theme:
-                ThemeData(primaryColor: purple, scaffoldBackgroundColor: white),
-            routeInformationParser: Modular.routeInformationParser,
-            routerDelegate: Modular.routerDelegate,
-            supportedLocales: L10n.all,
-            locale: selectedLocale,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            debugShowCheckedModeBanner: false,
-          );
-        });
+  void initState() {
+    super.initState();
+    _loadSelectedLanguage();
   }
 
-  Future<Locale> _loadSelectedLanguage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? languageCode = prefs.getString('selectedLanguageCode');
-    if (languageCode != null) {
-      setState(() {});
-      return Locale(languageCode);
-    } else {
-      return WidgetsBinding.instance.window.locale;
-    }
+  Future<void> _loadSelectedLanguage() async {
+    await homeStore.loadSelectedLanguage();
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("IDIOMA:> ${homeStore.selectedLanguage}");
+    return Observer(
+      builder: (context) {
+        return MaterialApp.router(
+          theme:
+              ThemeData(primaryColor: purple, scaffoldBackgroundColor: white),
+          routeInformationParser: Modular.routeInformationParser,
+          routerDelegate: Modular.routerDelegate,
+          supportedLocales: L10n.all,
+          locale: homeStore.selectedLanguage,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          debugShowCheckedModeBanner: false,
+        );
+      },
+    );
   }
 }

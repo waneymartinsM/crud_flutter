@@ -31,6 +31,12 @@ class _HomePageState extends State<HomePage> {
   String genreValue = "";
   String maritalStsValue = "";
 
+  @override
+  void initState() {
+    super.initState();
+    onInit();
+  }
+
   void onInit() async {
     await controller.recoverUserData();
     setState(() {
@@ -38,12 +44,6 @@ class _HomePageState extends State<HomePage> {
       emailController.text = controller.userModel.email;
       telController.text = controller.userModel.phone;
     });
-  }
-
-  @override
-  void initState() {
-    onInit();
-    super.initState();
   }
 
   @override
