@@ -58,6 +58,9 @@ class _HomePageState extends State<HomePage> {
             centerTitle: true,
             backgroundColor: purple,
             elevation: 0,
+            actions: [
+              Switch(value: false, onChanged: (bool value) {}),
+            ],
             title: Text(
               AppLocalizations.of(context)!.myProfile.toUpperCase(),
               style: GoogleFonts.syne(
