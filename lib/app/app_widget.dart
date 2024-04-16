@@ -35,8 +35,10 @@ class _AppWidgetState extends State<AppWidget> {
     return Observer(
       builder: (context) {
         return MaterialApp.router(
-          theme:
-              ThemeData(primaryColor: purple, scaffoldBackgroundColor: white),
+          theme: ThemeData(
+            primaryColor: purple,
+            scaffoldBackgroundColor: white,
+          ),
           routeInformationParser: Modular.routeInformationParser,
           routerDelegate: Modular.routerDelegate,
           supportedLocales: L10n.all,
