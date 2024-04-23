@@ -59,9 +59,11 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: purple,
             elevation: 0,
             actions: [
-              Switch(
-                value: controller.appStore.isDark,
-                onChanged: (bool value) {
+              IconButton(
+                icon: controller.appStore.isDark
+                    ? const Icon(Icons.light_mode_sharp)
+                    : const Icon(Icons.dark_mode_sharp),
+                onPressed: () async {
                   controller.appStore.changeTheme();
                 },
               ),

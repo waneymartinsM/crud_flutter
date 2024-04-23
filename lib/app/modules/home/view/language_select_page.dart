@@ -57,7 +57,7 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
     return Text(
       AppLocalizations.of(context)!.language,
       style: GoogleFonts.syne(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          fontSize: 18, fontWeight: FontWeight.bold, color: white),
     );
   }
 
@@ -84,7 +84,7 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
   }
 
   Container _buildDropdown(BuildContext context) {
-    var textStyle = GoogleFonts.syne(fontSize: 14);
+    var textStyle = GoogleFonts.syne(fontSize: 14, color: black);
     return Container(
       decoration: BoxDecoration(
           color: greyLight, borderRadius: BorderRadius.circular(8)),
