@@ -115,6 +115,7 @@ class _LanguageSelectPageState extends State<LanguageSelectPage> {
             onChanged: (Locale? locale) {
               if (locale != null) {
                 homeStore.updateLanguage(locale);
+                setState(() {});
                 print("locale: $locale");
               }
             },

@@ -23,6 +23,7 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   void initState() {
     super.initState();
+    store.loadTheme();
     _loadSelectedLanguage();
   }
 
@@ -36,24 +37,24 @@ class _AppWidgetState extends State<AppWidget> {
     print("IDIOMA:> ${homeStore.selectedLanguage}");
     return Observer(
       builder: (context) {
-        return MaterialApp.router(
-          // theme: ThemeData(
-          //   primaryColor: purple,
-          //   scaffoldBackgroundColor: white,
-          // ),
-          theme: store.themeType,
-          routeInformationParser: Modular.routeInformationParser,
-          routerDelegate: Modular.routerDelegate,
-          supportedLocales: L10n.all,
-          locale: homeStore.selectedLanguage,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          debugShowCheckedModeBanner: false,
-        );
+        if(store.themeType != null){
+          return MaterialApp.router(
+            theme: store.themeType,
+            routeInformationParser: Modular.routeInformationParser,
+            routerDelegate: Modular.routerDelegate,
+            supportedLocales: L10n.all,
+            locale: homeStore.selectedLanguage,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            debugShowCheckedModeBanner: false,
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
       },
     );
   }

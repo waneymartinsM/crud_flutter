@@ -20,13 +20,13 @@ mixin _$AppStore on AppStoreBase, Store {
       Atom(name: 'AppStoreBase.themeType', context: context);
 
   @override
-  ThemeData get themeType {
+  ThemeData? get themeType {
     _$themeTypeAtom.reportRead();
     return super.themeType;
   }
 
   @override
-  set themeType(ThemeData value) {
+  set themeType(ThemeData? value) {
     _$themeTypeAtom.reportWrite(value, super.themeType, () {
       super.themeType = value;
     });
