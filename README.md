@@ -35,7 +35,7 @@ O CRUD Flutter oferece as seguintes funcionalidades:
 </p>
 
 <p>
-<img src="screenshots/Screenshot_04.png" width="30%">
+<img src="screenshots/Screenshot_10.png" width="30%">
 <img src="screenshots/Screenshot_09.png" width="30%">
 <img src="screenshots/Screenshot_08.png" width="30%">
 </p>
