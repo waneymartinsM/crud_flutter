@@ -23,13 +23,7 @@ class _HomePageState extends State<HomePage> {
   final HomeStore controller = Modular.get();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final cpfController = TextEditingController();
-  final passwordController = TextEditingController();
   final telController = TextEditingController();
-  final maritalStsController = TextEditingController();
-  final genreController = TextEditingController();
-  String genreValue = "";
-  String maritalStsValue = "";
 
   @override
   void initState() {
@@ -49,37 +43,41 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Observer(
         builder: (_) => Scaffold(
           appBar: AppBar(
             centerTitle: true,
             backgroundColor: purple,
             elevation: 0,
-            actions: [
-              IconButton(
-                icon: controller.appStore.isDark
-                    ? const Icon(Icons.light_mode_sharp)
-                    : const Icon(Icons.dark_mode_sharp),
-                onPressed: () async {
-                  controller.appStore.changeTheme();
-                },
-              ),
-            ],
-            title: Text(
-              AppLocalizations.of(context)!.myProfile.toUpperCase(),
-              style: GoogleFonts.syne(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: white,
-              ),
-            ),
+            actions: [_buildIconTheme()],
+            title: _buildTitleAppBar(context),
           ),
           drawer: _buildDrawer(),
           body: _buildBody(),
         ),
+      ),
+    );
+  }
+
+  IconButton _buildIconTheme() {
+    return IconButton(
+      icon: controller.appStore.isDark
+          ? const Icon(Icons.light_mode_sharp)
+          : const Icon(Icons.dark_mode_sharp),
+      onPressed: () async {
+        controller.appStore.changeTheme();
+      },
+    );
+  }
+
+  Text _buildTitleAppBar(BuildContext context) {
+    return Text(
+      AppLocalizations.of(context)!.myProfile.toUpperCase(),
+      style: GoogleFonts.syne(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: white,
       ),
     );
   }

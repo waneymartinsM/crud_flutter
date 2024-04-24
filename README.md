@@ -24,6 +24,7 @@ O CRUD Flutter oferece as seguintes funcionalidades:
 - Atualizar Dados: Os usuários podem atualizar as informações do seu perfil, incluindo foto, nome, e-mail e telefone.
 - Excluir Usuário: Os usuários têm a opção de excluir permanentemente o seu perfil do aplicativo.
 - Opção de Idioma: Os usuários podem escolher o idioma desejado em todo o aplicativo, com suporte para português, inglês e espanhol.
+- Mudança de Temas Light e Dark: Os usuários podem alternar entre temas light e dark para personalizar a aparência do aplicativo de acordo com suas preferências.
 
 # Demonstração
 
