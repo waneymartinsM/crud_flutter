@@ -64,7 +64,6 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) => Scaffold(
-        appBar: buildAppBar(),
         body: controller.loading == true
             ? const Center(child: CircularProgressIndicator(color: purple))
             : _buildBody(context),
@@ -77,6 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          _buildArrowBackIcon(),
           _buildAddPhoto(),
           const SizedBox(height: 10),
           _buildAddPhotoText(),
@@ -87,13 +87,16 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  AppBar buildAppBar() {
-    return AppBar(
-      backgroundColor: white,
-      elevation: 0,
-      leading: IconButton(
-        onPressed: () => Modular.to.pushNamed('/login'),
-        icon: const Icon(Icons.arrow_back, color: darkPurple),
+  Align _buildArrowBackIcon() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 30, bottom: 10),
+        child: IconButton(
+          onPressed: () => Modular.to.pushNamed('/login'),
+          icon: Icon(Icons.arrow_back_ios_new_outlined,
+              color: controller.appStore.isDark ? white : darkPurple),
+        ),
       ),
     );
   }
@@ -124,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Text(
             AppLocalizations.of(context)!.addProfilePhoto,
             style: GoogleFonts.syne(
-              color: darkPurple,
+              color: controller.appStore.isDark ? white : darkPurple,
               fontWeight: FontWeight.w700,
               fontSize: 14,
             ),

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/modules/login/store/login_store.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
@@ -32,9 +32,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-    );
+    return Scaffold(body: _buildBody());
   }
 
   Widget _buildBody() {
@@ -185,7 +183,8 @@ class _SignInPageState extends State<SignInPage> {
       children: [
         Text(
           AppLocalizations.of(context)!.notHaveAccountRegister,
-          style: GoogleFonts.syne(color: darkPurple),
+          style: GoogleFonts.syne(
+              color: controller.appStore.isDark ? white : darkPurple),
         ),
         GestureDetector(
           onTap: () {
@@ -194,7 +193,8 @@ class _SignInPageState extends State<SignInPage> {
           child: Text(
             AppLocalizations.of(context)!.register,
             style: GoogleFonts.syne(
-                color: darkPurple, fontWeight: FontWeight.bold),
+                color: controller.appStore.isDark ? white : darkPurple,
+                fontWeight: FontWeight.bold),
           ),
         ),
       ],

@@ -1,8 +1,9 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:io';
-import 'package:cpf_cnpj_validator/cpf_validator.dart';
+import 'package:crud_flutter/app/app_store.dart';
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/modules/login/repository/login_repository.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,10 @@ part 'register_store.g.dart';
 class RegisterStore = _RegisterStore with _$RegisterStore;
 
 abstract class _RegisterStore with Store {
+  _RegisterStore(this.appStore);
+
   final FirebaseStorage storage = FirebaseStorage.instance;
+  final AppStore appStore;
 
   @observable
   bool passwordHide = true;
@@ -65,7 +69,7 @@ abstract class _RegisterStore with Store {
     return File(croppedImage!.path);
   }
 
- @action
+  @action
   Future upload(String path, String email) async {
     File file = File(path);
     try {

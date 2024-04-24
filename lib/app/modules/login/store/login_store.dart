@@ -1,3 +1,4 @@
+import 'package:crud_flutter/app/app_store.dart';
 import 'package:crud_flutter/app/model/user.dart';
 import 'package:crud_flutter/app/modules/login/repository/login_repository.dart';
 import 'package:crud_flutter/app/widgets/alert.dart';
@@ -10,6 +11,9 @@ part 'login_store.g.dart';
 class LoginStore = LoginStoreBase with _$LoginStore;
 
 abstract class LoginStoreBase with Store {
+  LoginStoreBase(this.appStore);
+
+  final AppStore appStore;
 
   @observable
   String email = "";

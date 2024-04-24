@@ -1,3 +1,4 @@
+import 'package:crud_flutter/app/modules/login/store/login_store.dart';
 import 'package:crud_flutter/app/utils/colors.dart';
 import 'package:crud_flutter/app/widgets/custom_animated_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,8 +7,15 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final controller = Modular.get<LoginStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -88,14 +96,17 @@ class LoginPage extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context)!.notHaveAccountRegister,
-          style: GoogleFonts.syne(color: darkPurple.withOpacity(0.7)),
+          style: GoogleFonts.syne(
+              color: controller.appStore.isDark
+                  ? white
+                  : darkPurple.withOpacity(0.7)),
         ),
         GestureDetector(
           onTap: () => Modular.to.pushNamed('/login/register'),
           child: Text(
             AppLocalizations.of(context)!.register,
             style: GoogleFonts.syne(
-              color: darkPurple,
+              color: controller.appStore.isDark ? white : darkPurple,
               fontWeight: FontWeight.bold,
             ),
           ),
