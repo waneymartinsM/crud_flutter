@@ -105,7 +105,15 @@ class _HomePageState extends State<HomePage> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return _buildDeleteAccount();
+                  return _alertShowDialog(
+                    message:
+                        AppLocalizations.of(context)!.youWantDeleteYourAccount,
+                    buttonText:
+                        AppLocalizations.of(context)!.delete.toUpperCase(),
+                    onTap: () async {
+                      await controller.deleteAccount();
+                    },
+                  );
                 },
               );
             },
@@ -119,8 +127,20 @@ class _HomePageState extends State<HomePage> {
             leading: const Icon(Icons.logout),
             title: Text(AppLocalizations.of(context)!.toGoOut, style: syne),
             onTap: () {
-              FirebaseAuth.instance.signOut();
-              Modular.to.navigate('/login');
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return _alertShowDialog(
+                    message: AppLocalizations.of(context)!.disconnectFromApp,
+                    buttonText:
+                        AppLocalizations.of(context)!.toGoOut.toUpperCase(),
+                    onTap: () async {
+                      await FirebaseAuth.instance.signOut();
+                      Modular.to.navigate('/login');
+                    },
+                  );
+                },
+              );
             },
           ),
         ],
@@ -146,45 +166,6 @@ class _HomePageState extends State<HomePage> {
           children: [
             _buildUserPhoto(),
             _buildUserInformation(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDeleteAccount() {
-    return AlertDialog(
-      title: Center(
-          child: Text(AppLocalizations.of(context)!.attention,
-              style: GoogleFonts.syne(fontWeight: FontWeight.bold))),
-      content: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 180,
-        child: Column(
-          children: [
-            Text(AppLocalizations.of(context)!.youWantDeleteYourAccount,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.syne(fontSize: 16)),
-            const Spacer(),
-            CustomAnimatedButton(
-              onTap: () async {
-                await controller.deleteAccount();
-              },
-              widhtMultiply: 1,
-              height: 45,
-              colorText: white,
-              color: purple,
-              text: AppLocalizations.of(context)!.delete.toUpperCase(),
-            ),
-            const SizedBox(height: 10),
-            CustomAnimatedButton(
-              onTap: () => Modular.to.pop(),
-              widhtMultiply: 1,
-              height: 45,
-              colorText: black,
-              color: grey.withOpacity(0.2),
-              text: AppLocalizations.of(context)!.cancel.toUpperCase(),
-            ),
           ],
         ),
       ),
@@ -293,6 +274,49 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 10),
       ],
+    );
+  }
+
+  _alertShowDialog({
+    String? message,
+    String? buttonText,
+    Function? onTap,
+  }) {
+    return AlertDialog(
+      title: Center(
+          child: Text(AppLocalizations.of(context)!.attention,
+              style: GoogleFonts.syne(fontWeight: FontWeight.bold))),
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: 180,
+        child: Column(
+          children: [
+            Text(
+              message!,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.syne(fontSize: 16),
+            ),
+            const Spacer(),
+            CustomAnimatedButton(
+              onTap: onTap,
+              widhtMultiply: 1,
+              height: 45,
+              colorText: white,
+              color: purple,
+              text: buttonText!,
+            ),
+            const SizedBox(height: 10),
+            CustomAnimatedButton(
+              onTap: () => Modular.to.pop(),
+              widhtMultiply: 1,
+              height: 45,
+              colorText: black,
+              color: grey.withOpacity(0.2),
+              text: AppLocalizations.of(context)!.cancel.toUpperCase(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -55,6 +55,7 @@
   "cancel": "Cancelar",
   "save": "Guardar",
   "saveEditions": "Guardar ediciones",
+  "disconnectFromApp": "¿Estás seguro de que deseas desconectarte de la aplicación?",
 
   "language": "Idioma",
   "selectPreferredLanguage": "Seleccione su idioma preferido a continuación:",
