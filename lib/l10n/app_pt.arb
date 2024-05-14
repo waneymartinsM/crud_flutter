@@ -3,6 +3,7 @@
   "notHaveAccountRegister": "Não tem uma conta? ",
   "register": "Registre-se",
   "createAnAccount": "Registrar",
+  "signInWithGoogle": "Entrar com o Google",
 
   "email": "E-mail",
   "fillFieldWithYourEmail": "Preencha o campo com o seu e-mail.",

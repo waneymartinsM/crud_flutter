@@ -86,6 +86,8 @@ class _SignInPageState extends State<SignInPage> {
         _buildForm(),
         SizedBox(height: size.height * 0.04),
         _buildButtonSignIn(),
+        const SizedBox(height: 20),
+        _buildSignGoogleButton(),
         SizedBox(height: size.height * 0.03),
         _buildTextSignUp(),
       ],
@@ -173,6 +175,40 @@ class _SignInPageState extends State<SignInPage> {
         colorText: white,
         color: purple,
         text: AppLocalizations.of(context)!.enter,
+      ),
+    );
+  }
+
+  Widget _buildSignGoogleButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 45),
+      child: Container(
+        height: 45,
+        width: MediaQuery.of(context).size.width * 1,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey.shade200,
+        ),
+        child: GestureDetector(
+          onTap: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/google.png', height: 20),
+              const SizedBox(width: 10),
+              Text(
+                //signInWithGoogle
+                AppLocalizations.of(context)!.signInWithGoogle,
+                style: const TextStyle(
+                  fontFamily: 'Syne',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: black,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
