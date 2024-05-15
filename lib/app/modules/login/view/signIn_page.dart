@@ -197,7 +197,6 @@ class _SignInPageState extends State<SignInPage> {
               Image.asset('assets/images/google.png', height: 20),
               const SizedBox(width: 10),
               Text(
-                //signInWithGoogle
                 AppLocalizations.of(context)!.signInWithGoogle,
                 style: const TextStyle(
                   fontFamily: 'Syne',
